@@ -1,14 +1,15 @@
 #!/bin/bash
-set -e
 
-echo "Building vite frontend..."
-cd vite
+# 打包 next-api
+echo "正在打包 next-api..."
+cd next-api
 npm install
 npm run build
 
-echo "Building next-api backend..."
-cd ../next-api
+# 打包 vite-app
+echo "正在打包 vite-app..."
+cd ../vite-app
 npm install
 npm run build
 
-echo "Build finished. Frontend in vite/dist, backend in next-api/.next"
+echo "两个项目打包完成！" 
