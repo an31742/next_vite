@@ -1,15 +1,4 @@
 {
-  "projects": [
-    {
-      "src": "vite",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
-    },
-    {
-      "src": "next-api",
-      "use": "@vercel/next"
-    }
-  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/vite/$1" }
