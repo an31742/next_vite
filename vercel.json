@@ -12,12 +12,12 @@
   ],
   "routes": [
     {
-      "src": "/vite/(.*)",
-      "dest": "vite/dist/$1"
+      "src": "/api/(.*)",
+      "dest": "next-api/api/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "next-api/$1"
+      "dest": "vite/dist/$1"
     }
   ]
 } 
