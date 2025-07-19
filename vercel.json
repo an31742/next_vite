@@ -6,7 +6,7 @@
       "use": "@vercel/next"
     },
     {
-      "src": "vite/package.json",
+      "src": "vite-app/package.json",
       "use": "@vercel/static-build"
     }
   ],
@@ -17,7 +17,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "vite/dist/$1"
+      "dest": "vite-app/dist/$1"
     }
   ]
 } 
