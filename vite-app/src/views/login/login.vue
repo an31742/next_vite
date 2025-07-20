@@ -13,15 +13,20 @@
   </el-form>
 </template>
 <script lang="ts">
-import { useRouter } from "vue-router"
 import { reactive } from "vue"
+import { useRouter } from "vue-router"
 import { useCounter } from "../../store/index"
-import { jwtDecode, JwtPayload } from "jwt-decode"
-
-interface AuthJwtPayload extends JwtPayload {
-  roles?: string[];
-}
+import { jwtDecode } from "jwt-decode"
+import type { JwtPayload } from "jwt-decode"
 import loginApi from "../../service/model/login"
+
+export interface AuthJwtPayload extends JwtPayload {
+  roles?: string[]
+}
+
+// 使用@types/jwt-decode提供的类型定义
+
+
 
 export default {
   setup() {
@@ -33,31 +38,29 @@ export default {
     })
 
     const submitForm = async () => {
-      // 调用后端登录接口
-      const res = await loginApi.login(ruleForm)
-      if (res.code === 200) {
-        const token = res.token
-        window.localStorage.setItem("token", token)
-        // 解析 JWT，提取角色
-        try {
-          const decoded = jwtDecode<AuthJwtPayload>(token)
+      try {
+        // 调用后端登录接口
+        const res = await loginApi.login(ruleForm)
+        if (res?.code === 200 && res.token) {
+          const token = res.token
+          window.localStorage.setItem("token", token)
+          // 解析 JWT，提取角色
+          const decoded = jwtDecode<JwtPayload>(token)
           const roles = decoded?.roles || []
           store.roles = roles
           store.userInfo = decoded
           window.localStorage.setItem("userInfo", JSON.stringify(decoded))
-        } catch (e) {
-          store.roles = []
+          store.getAuthButtonList() //在登录的时候获取按钮级别权限
+          router.push({ path: "/" })
+        } else {
+          // 登录失败处理
+          alert(res?.msg || "登录失败")
         }
-        store.getAuthButtonList() //在登录的时候获取按钮级别权限
-        router.push({
-          path: "/",
-        })
-      } else {
-        // 登录失败处理
-        alert(res.msg || "登录失败")
+      } catch (e) {
+        console.error("Login error:", e)
+        alert("登录失败: 网络错误或服务器异常")
       }
     }
-    console.log("🚀 ~ submitForm ~ store.getAuthButtonList():", store.getAuthButtonList())
 
     const resetForm = () => {}
     return {
