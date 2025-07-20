@@ -1,5 +1,7 @@
 import React from 'react'
-
+const currentDate = new Date().toISOString()
+.replace('T', ' ')
+.replace(/\.\d+Z$/, '')
 const apiList = [
   {
     name: '登录',
@@ -66,6 +68,15 @@ export default function ApiDoc() {
   return (
     <div style={{ maxWidth: 900, margin: '40px auto', fontFamily: 'Inter, sans-serif', background: '#f8f9fb', borderRadius: 16, boxShadow: '0 4px 24px #0001', padding: 32 }}>
       <h1 style={{ textAlign: 'center', color: '#2d3748', fontWeight: 800, letterSpacing: 2, fontSize: 36, marginBottom: 32 }}>API 接口文档</h1>
+      <main className="p-4">
+      <h1>Next.js API Server</h1>
+      <div className="mt-4">
+        <p>Current Date and Time (UTC): {currentDate}</p>
+        <p>Environment: {process.env.NODE_ENV}</p>
+        <p>API Base URL: {process.env.NEXT_PUBLIC_API_BASE_URL}</p>
+        <p>Frontend URL: {process.env.NEXT_PUBLIC_FRONTEND_URL}</p>
+      </div>
+    </main>
       {apiList.map((api) => (
         <div key={api.url} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, margin: '32px 0', padding: 28, boxShadow: '0 2px 8px #0001' }}>
           <h2 style={{ margin: 0, color: '#2563eb', fontWeight: 700 }}>{api.name}</h2>
