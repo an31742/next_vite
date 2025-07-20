@@ -1,10 +1,10 @@
 <template>
   <el-form ref="ruleFormRef" :model="ruleForm" label-width="120px" class="demo-ruleForm">
     <el-form-item label="Confirm">
-      <el-input v-model="ruleForm.name" />
+      <el-input v-model="ruleForm.userName" />
     </el-form-item>
     <el-form-item label="Password">
-      <el-input v-model="ruleForm.password" />
+      <el-input v-model="ruleForm.passWord" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm">Submit</el-button>
@@ -15,17 +15,21 @@
 <script lang="ts">
 import { useRouter } from "vue-router"
 import { reactive } from "vue"
-import { useCounter } from "@/store/index.ts"
-import { jwtDecode } from "jwt-decode"
-import loginApi from "@/service/model/login.ts"
+import { useCounter } from "../../store/index"
+import { jwtDecode, JwtPayload } from "jwt-decode"
+
+interface AuthJwtPayload extends JwtPayload {
+  roles?: string[];
+}
+import loginApi from "../../service/model/login"
 
 export default {
   setup() {
     const store = useCounter()
     const router = useRouter()
     const ruleForm = reactive({
-      name: "admin",
-      password: 12345,
+      userName: "admin",
+      passWord: "12345",
     })
 
     const submitForm = async () => {
@@ -36,8 +40,8 @@ export default {
         window.localStorage.setItem("token", token)
         // 解析 JWT，提取角色
         try {
-          const decoded = jwtDecode(token)
-          const roles = decoded.roles || []
+          const decoded = jwtDecode<AuthJwtPayload>(token)
+          const roles = decoded?.roles || []
           store.roles = roles
           store.userInfo = decoded
           window.localStorage.setItem("userInfo", JSON.stringify(decoded))

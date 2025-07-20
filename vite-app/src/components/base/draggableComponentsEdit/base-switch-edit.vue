@@ -23,7 +23,7 @@ const form: any = reactive({
 
 watch(
   () => form,
-  (newValue, oldValue) => {
+  (newValue, _oldValue) => {
     storeDraggableObj.getSwitchObj(newValue)
   },
   { deep: true }

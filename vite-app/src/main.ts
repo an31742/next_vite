@@ -67,14 +67,14 @@ Object.keys(ElementPlusIconsVue).forEach((key) => {
 })
 
 Object.keys(baseComponents).forEach((key) => {
-  app.component(key, baseComponents[key])
+  app.component(key, (baseComponents as Record<string, any>)[key])
 })
 Object.keys(baseComponentsEdit).forEach((key) => {
-  app.component(key, baseComponentsEdit[key])
+  app.component(key, (baseComponentsEdit as Record<string, any>)[key])
 })
 
-app.use(vuedraggable)
-app.use(rawDisplayer, "rawDisplayer")
+app.component("vuedraggable", vuedraggable)
+app.component("rawDisplayer", rawDisplayer)
 app.use(router)
 app.use(directives)
 app.use(piniaStore)

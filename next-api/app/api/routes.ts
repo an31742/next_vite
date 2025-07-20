@@ -3,6 +3,12 @@ import jwt from "jsonwebtoken"
 
 const SECRET = "your_jwt_secret"
 
+type Route = {
+  meta?: { anchors?: string }
+  children?: Route[]
+  [key: string]: any
+}
+
 const allRoutes = [
   {
     path: "/home",
@@ -50,9 +56,9 @@ const allRoutes = [
   },
 ]
 
-function filterRoutesByRole(routes, roles) {
+function filterRoutesByRole(routes: Route[], roles: string[]): Route[] {
   return routes
-    .filter((route) => !route.meta.anchors || roles.includes(route.meta.anchors))
+    .filter((route) => !route.meta?.anchors || roles.includes(route.meta.anchors))
     .map((route) => ({
       ...route,
       children: route.children ? filterRoutesByRole(route.children, roles) : [],
@@ -63,7 +69,7 @@ export async function GET(request: Request) {
   const auth = request.headers.get("authorization") || ""
   const token = auth.replace("Bearer ", "")
   try {
-    const decoded = jwt.verify(token, SECRET)
+    const decoded = jwt.verify(token, SECRET) as { roles?: string[] }
     const roles = decoded.roles || []
     const userRoutes = filterRoutesByRole(allRoutes, roles)
     return NextResponse.json({ code: 200, data: userRoutes })

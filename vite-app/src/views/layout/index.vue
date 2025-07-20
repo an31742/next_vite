@@ -5,10 +5,10 @@
         <div class="project-name">
           <h4>an的个人小天地</h4>
         </div>
-          <div>
-          <span style="color:'#fff'">切换主题</span>
+        <div>
+          <span style="color: &quot;#fff&quot;">切换主题</span>
           <el-switch @change="changeDark" v-model="dark" class="mt-2" style="margin-left: 24px" inline-prompt active-icon="MoonNight" inactive-icon="Sunny" />
-         </div>
+        </div>
         <div>
           <el-dropdown @command="handleCommand">
             <el-image :src="obj.url" :fit="fit" />
@@ -26,8 +26,7 @@
           <Mymue></Mymue>
         </el-aside>
         <el-main>
-          <Home>
-          </Home>
+          <Home> </Home>
         </el-main>
       </el-container>
     </el-container>
@@ -35,21 +34,22 @@
 </template>
 
 <script lang="ts" setup>
-import Home from "../home.vue";
-import Mymue from "./myMue.vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { reactive,ref } from "vue";
-import { useRouter } from "vue-router";
-import { useCounter } from '@/store/index.ts'
+import Home from "../home.vue"
+import Mymue from "./myMue.vue"
+import { ElMessage, ElMessageBox } from "element-plus"
+import { reactive, ref } from "vue"
+import { useRouter } from "vue-router"
+import { useCounter } from "@/store/index.ts"
 // import useCurrentInstance from "@/utils/useCurrentInstance";
 // const { proxy } = useCurrentInstance();
-const router = useRouter();
+const router = useRouter()
 const store = useCounter()
-let dark = ref<boolean>(false);
+let dark = ref<boolean>(false)
 
 const obj = reactive({
   url: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-});
+})
+const fit = ref("cover")
 
 const handleCommand = (command: string | number | object) => {
   // ElMessage(`click on item ${command}`);
@@ -62,26 +62,26 @@ const handleCommand = (command: string | number | object) => {
     })
       .then(() => {
         store.logout()
-        router.push("/login");
+        router.push("/login")
         ElMessage({
           type: "success",
           message: "操作成功!",
-        });
+        })
       })
       .catch(() => {
         ElMessage({
           type: "info",
           message: "已取消操作",
-        });
-      });
+        })
+      })
   }
-};
+}
 //switch开关的chang事件进行暗黑模式的切换
 const changeDark = () => {
-    //获取HTML根节点
-    let html = document.documentElement;
-    //判断HTML标签是否有类名dark
-    dark.value ? html.className = 'dark' : html.className = '';
+  //获取HTML根节点
+  let html = document.documentElement
+  //判断HTML标签是否有类名dark
+  dark.value ? (html.className = "dark") : (html.className = "")
 }
 </script>
 

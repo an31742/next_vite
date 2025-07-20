@@ -1,12 +1,12 @@
 //http.ts
 import axios, { AxiosRequestConfig } from "axios"
 import NProgress from "nprogress"
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from "jwt-decode"
 axios.defaults.baseURL = "/api"
 axios.defaults.timeout = 10000
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8"
 axios.interceptors.request.use(
-  (config): AxiosRequestConfig<any> => {
+  (config: any) => {
     const token = window.sessionStorage.getItem("token")
     if (token) {
       //@ts-ignore
@@ -20,12 +20,12 @@ axios.interceptors.request.use(
 )
 
 async function refreshToken() {
-  const oldToken = window.localStorage.getItem('token')
+  const oldToken = window.localStorage.getItem("token")
   if (!oldToken) return null
   try {
-    const res = await axios.post('/api/refresh-token', { token: oldToken })
+    const res = await axios.post("/api/refresh-token", { token: oldToken })
     if (res.data.code === 200) {
-      window.localStorage.setItem('token', res.data.token)
+      window.localStorage.setItem("token", res.data.token)
       return res.data.token
     }
   } catch (e) {}
@@ -42,9 +42,9 @@ axios.interceptors.response.use(
         res.config.headers.token = newToken
         return axios(res.config)
       } else {
-        window.localStorage.setItem('token', '')
+        window.localStorage.setItem("token", "")
         // 跳转登录页
-        window.location.href = '/login'
+        window.location.href = "/login"
       }
     }
     return res

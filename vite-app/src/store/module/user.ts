@@ -6,7 +6,7 @@
  * @Description: 请填写简介
  */ import { defineStore } from "pinia"
 import { getAuthButtonListApi } from "@/service/model/login"
-import http from '@/service/http.ts'
+import http from "@/service/http.ts"
 
 interface UserStore {
   userInfo: any
@@ -43,13 +43,13 @@ export const useCounter = defineStore("user", {
     // 定义 actions 的方法
     async getUserInfo() {
       // 从后端获取用户信息
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem("token")
       if (!token) return
-      const res = await http.get('/userinfo', {})
+      const res = await http.get("/userinfo", {})
       if (res.code === 200) {
         this.userInfo = res.data
-        this.roles = res.data.roles || []
-        localStorage.setItem('userInfo', JSON.stringify(res.data))
+        this.roles = (res.data as any).roles || []
+        localStorage.setItem("userInfo", JSON.stringify(res.data))
       }
     },
     setUserResourceTree(payload: any) {
@@ -69,9 +69,9 @@ export const useCounter = defineStore("user", {
       this.userInfo = {}
       this.roles = []
       this.authButtonList = {}
-      this.routerName = ''
-      localStorage.removeItem('token')
-      localStorage.removeItem('userInfo')
+      this.routerName = ""
+      localStorage.removeItem("token")
+      localStorage.removeItem("userInfo")
       localStorage.clear()
     },
   },
