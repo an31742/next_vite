@@ -1,15 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "next-app/package.json",
-      "use": "@vercel/static-build"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "next-app/dist/$1"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/next-api/app/api/$1" },
+    { "source": "/(.*)", "destination": "/vite-app/$1" }
   ]
 } 
