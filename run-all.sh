@@ -1,18 +1,15 @@
 #!/bin/bash
 
-# 启动 next-api
+# 后端 9527
 cd next-api
-npm run dev &
-NEXT_PID=$!
-
-# 启动 vite-app
-cd ../vite-app
-npm run dev &
-VITE_PID=$!
-
-# 返回根目录
+yarn dev -p 9527 &
+NEXT_API_PID=$!
 cd ..
 
-# 等待两个进程结束
-wait $NEXT_PID
-wait $VITE_PID 
+# 前端 5173
+cd vite-app
+yarn dev --port 5173 &
+VITE_APP_PID=$!
+cd ..
+
+wait $NEXT_API_PID $VITE_APP_PID 

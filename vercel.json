@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "vite-app/package.json",
+      "src": "next-app/package.json",
       "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "vite-app/dist/$1"
+      "dest": "next-app/dist/$1"
     }
   ]
 } 

@@ -1,25 +1,24 @@
-<script setup>
-import Whiteboard from "./components/Whiteboard.vue"
+<script setup lang="ts">
+import { ref, onMounted } from "vue"
+// import axios from "axios"
+
+const response = ref("")
+
+// onMounted(async () => {
+//   try {
+//     const res = await axios.get("/login")
+//     response.value = res.data.status
+//     console.log("response.value", response.value)
+//   } catch (error) {
+//     console.error(error)
+//   }
+// })
 </script>
 
 <template>
   <div>
-    <h1>我的白板应用</h1>
-    <Whiteboard />
+    <router-view />
   </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<style scoped></style>
