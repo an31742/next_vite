@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import path from "path"
+
 const nextConfig = {
   // 禁用页面渲染
   pageExtensions: ["tsx", "ts", "jsx", "js"],
@@ -27,6 +29,11 @@ const nextConfig = {
         destination: "/api/:path*",
       },
     ]
+  },
+
+  webpack: (config) => {
+    config.resolve.alias["@"] = path.resolve(__dirname, "app")
+    return config
   },
 }
 
