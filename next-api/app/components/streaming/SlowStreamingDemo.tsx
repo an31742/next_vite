@@ -1,4 +1,4 @@
-import { fetchSlowData } from '@/lib/streaming/mockData'
+import { fetchSlowData } from '@/lib/Streaming/mockData/mockData'
 
 export default async function SlowComponent() {
   const data = await fetchSlowData()

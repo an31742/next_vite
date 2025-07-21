@@ -1,4 +1,4 @@
-import StreamingDemo from '@/components/streaming/StreamingDemo'
+import StreamingDemo from '@/components/streaming/StreamingDemo';
 
 export default function StreamingPage() {
   return (

@@ -1,6 +1,6 @@
-[0;34m[2025-07-21 20:36:54] 开始构建 vite-app...[0m
+[0;34m[2025-07-21 23:02:11] 开始构建 vite-app...[0m
 
-up to date in 432ms
+up to date in 468ms
 
 106 packages are looking for funding
   run `npm fund` for details
@@ -105,5 +105,5 @@ dist/assets/index-CZzfgg7Z.js                                           758.02 k
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-✓ built in 2.52s
-[0;32m[2025-07-21 20:37:00] vite-app 构建成功！[0m
+✓ built in 2.65s
+[0;32m[2025-07-21 23:02:17] vite-app 构建成功！[0m

@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 import path from "path"
+import { fileURLToPath } from "url"
+
+// 获取 __dirname 的 ESM 写法
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const nextConfig = {
   // 禁用页面渲染

@@ -1,6 +1,6 @@
-[0;34m[2025-07-21 20:36:54] 开始构建 next-api...[0m
+[0;34m[2025-07-21 23:02:11] 开始构建 next-api...[0m
 
-up to date in 131ms
+up to date in 180ms
 
 5 packages are looking for funding
   run `npm fund` for details
@@ -12,14 +12,19 @@ up to date in 131ms
    - Environments: .env
 
    Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
 Failed to compile.
 
-./app/streaming/page.tsx
-Module not found: Can't resolve '@/components/streaming/StreamingDemo'
+./app/api/login/route.ts:83:57
+Type error: 'error' is of type 'unknown'.
 
-https://nextjs.org/docs/messages/module-not-found
-
-
-> Build failed because of webpack errors
-[0;31m[2025-07-21 20:36:56] 错误: next-api 构建失败[0m
+[0m [90m 81 |[39m         code[33m:[39m [35m500[39m[33m,[39m[0m
+[0m [90m 82 |[39m         message[33m:[39m [32m"服务器错误"[39m[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 83 |[39m         error[33m:[39m process[33m.[39menv[33m.[39m[33mNODE_ENV[39m [33m===[39m [32m"development"[39m [33m?[39m error[33m.[39mmessage [33m:[39m undefined[33m,[39m[0m
+[0m [90m    |[39m                                                         [31m[1m^[22m[39m[0m
+[0m [90m 84 |[39m       })[33m,[39m[0m
+[0m [90m 85 |[39m       {[0m
+[0m [90m 86 |[39m         status[33m:[39m [35m500[39m[33m,[39m[0m
+[0;31m[2025-07-21 23:02:16] 错误: next-api 构建失败[0m
 [0;31m构建失败，请检查日志文件: logs/error.log[0m
