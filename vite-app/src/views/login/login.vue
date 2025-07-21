@@ -39,11 +39,13 @@ const submitForm = async () => {
       // 解析 JWT，提取角色
       const decoded = decodeJWTToken(token)
       // 兼容后端返回的 role 字段
-      let roles = []
-      if (decoded && Array.isArray(decoded.role)) {
-        roles = decoded.role
-      } else if (decoded && Array.isArray(decoded.roles)) {
-        roles = decoded.roles
+      let roles: string[] = []
+      if (decoded && typeof decoded === "object") {
+        if (Array.isArray((decoded as any).role)) {
+          roles = (decoded as any).role
+        } else if (Array.isArray((decoded as any).roles)) {
+          roles = (decoded as any).roles
+        }
       }
       store.roles = roles
       store.userInfo = decoded

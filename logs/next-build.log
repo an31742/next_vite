@@ -1,6 +1,6 @@
-[0;34m[2025-07-21 03:27:33] 开始构建 next-api...[0m
+[0;34m[2025-07-21 20:36:54] 开始构建 next-api...[0m
 
-added 64 packages in 4s
+up to date in 131ms
 
 5 packages are looking for funding
   run `npm fund` for details
@@ -21,5 +21,5 @@ https://nextjs.org/docs/messages/module-not-found
 
 
 > Build failed because of webpack errors
-[0;31m[2025-07-21 03:27:42] 错误: next-api 构建失败[0m
+[0;31m[2025-07-21 20:36:56] 错误: next-api 构建失败[0m
 [0;31m构建失败，请检查日志文件: logs/error.log[0m

@@ -9,8 +9,7 @@ import { useCounter } from "@/store/index.ts"
 
 export function checkRole(data: any) {
   const infoStore = useCounter()
-  // 兼容 role 和 roles 字段
-  const userRoles = infoStore.roles || infoStore.role || []
+  const userRoles = infoStore.roles || []
   if (userRoles.includes(data)) {
     return true
   }
