@@ -5,15 +5,14 @@
  * @LastEditTime: 2023-10-26 14:26:18
  * @Description: 请填写简介
  */
-import { useCounter } from '@/store/index.ts'
-
+import { useCounter } from "@/store/index.ts"
 
 export function checkRole(data: any) {
-  const infoStore=useCounter()
-  // infoStore.getUserInfo({})
-  if (infoStore.roles.includes(data)) {
+  const infoStore = useCounter()
+  // 兼容 role 和 roles 字段
+  const userRoles = infoStore.roles || infoStore.role || []
+  if (userRoles.includes(data)) {
     return true
   }
   return false
-  
 }

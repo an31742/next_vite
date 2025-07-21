@@ -79,6 +79,10 @@ router.beforeEach((to, from, next) => {
     // 权限校验：基于 JWT 的角色守卫
     const token = window.localStorage.getItem("token") || ""
     const anchors = typeof to.meta.anchors === "string" || Array.isArray(to.meta.anchors) ? to.meta.anchors : ""
+    console.log("anchors: ", anchors)
+    console.log("token: ", token)
+    console.log("hasRole(token, anchors): ", hasRole(token, anchors))
+    console.log(" jwtDecode(token)", jwtDecode(token))
     if (anchors && !hasRole(token, anchors)) {
       // 检查 token 是否过期或无效
       try {

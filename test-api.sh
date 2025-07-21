@@ -15,5 +15,5 @@ echo -e "\nTesting POST request..."
 curl -X POST http://localhost:9527/api/login \
 -H "Content-Type: application/json" \
 -H "Origin: http://localhost:5173" \
--d '{"userName":"admin","passWord":"12345"}' \
+-d '{"name":"admin","password":"12345"}' \
 -v

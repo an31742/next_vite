@@ -12,17 +12,17 @@ export async function POST(request: Request) {
     console.log(`[${getCurrentTime()}] Received login request`)
 
     const body = await request.json()
-    const { userName, passWord } = body
+    const { name, password } = body
 
-    console.log("Login attempt:", { userName, time: getCurrentTime() })
+    console.log("Login attempt:", { name, time: getCurrentTime() })
 
-    if (userName === "admin" && passWord === "12345") {
+    if (name === "admin" && password === "12345") {
       const token = jwt.sign(
         {
           userId: 1,
-          userName,
+          name,
           loginTime: getCurrentTime(),
-          role: "admin",
+          role: ["admin", "user", "super-management"],
         },
         "admin_secret_key_2025_07_20",
         { expiresIn: "24h" }
@@ -37,8 +37,8 @@ export async function POST(request: Request) {
             token,
             user: {
               userId: 1,
-              userName,
-              role: "admin",
+              name,
+              role: ["admin", "user", "super-management"],
               loginTime: getCurrentTime(),
             },
           },

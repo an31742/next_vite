@@ -1,10 +1,10 @@
 <template>
   <el-form ref="ruleFormRef" :model="ruleForm" label-width="120px" class="demo-ruleForm">
     <el-form-item label="Confirm">
-      <el-input v-model="ruleForm.userName" />
+      <el-input v-model="ruleForm.name" />
     </el-form-item>
-    <el-form-item label="Password">
-      <el-input v-model="ruleForm.passWord" />
+    <el-form-item label="password">
+      <el-input v-model="ruleForm.password" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm">Submit</el-button>
@@ -12,64 +12,55 @@
     </el-form-item>
   </el-form>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 import { reactive } from "vue"
 import { useRouter } from "vue-router"
 import { useCounter } from "../../store/index"
-import { jwtDecode } from "jwt-decode"
-import type { JwtPayload } from "jwt-decode"
+import { decodeJWTToken } from "../../utils/auth/index"
+import { JWTOptions } from "../../utils/auth/types/jwt.d"
 import loginApi from "../../service/model/login"
+import { LoginParams, LoginResponse } from "./types/api"
+const store = useCounter()
+const router = useRouter()
+const ruleForm = reactive({
+  name: "admin",
+  password: "12345",
+})
 
-export interface AuthJwtPayload extends JwtPayload {
-  roles?: string[]
-}
+const submitForm = async () => {
+  try {
+    const params = { name: ruleForm.name, password: ruleForm.password }
+    // 调用后端登录接口
+    const res = await loginApi.login(params)
 
-// 使用@types/jwt-decode提供的类型定义
-
-
-
-export default {
-  setup() {
-    const store = useCounter()
-    const router = useRouter()
-    const ruleForm = reactive({
-      userName: "admin",
-      passWord: "12345",
-    })
-
-    const submitForm = async () => {
-      try {
-        // 调用后端登录接口
-        const res = await loginApi.login(ruleForm)
-        if (res?.code === 200 && res.token) {
-          const token = res.token
-          window.localStorage.setItem("token", token)
-          // 解析 JWT，提取角色
-          const decoded = jwtDecode<JwtPayload>(token)
-          const roles = decoded?.roles || []
-          store.roles = roles
-          store.userInfo = decoded
-          window.localStorage.setItem("userInfo", JSON.stringify(decoded))
-          store.getAuthButtonList() //在登录的时候获取按钮级别权限
-          router.push({ path: "/" })
-        } else {
-          // 登录失败处理
-          alert(res?.msg || "登录失败")
-        }
-      } catch (e) {
-        console.error("Login error:", e)
-        alert("登录失败: 网络错误或服务器异常")
+    if (res?.code === 200 && res.data.token) {
+      const token = res.data.token
+      window.localStorage.setItem("token", token)
+      // 解析 JWT，提取角色
+      const decoded = decodeJWTToken(token)
+      // 兼容后端返回的 role 字段
+      let roles = []
+      if (decoded && Array.isArray(decoded.role)) {
+        roles = decoded.role
+      } else if (decoded && Array.isArray(decoded.roles)) {
+        roles = decoded.roles
       }
+      store.roles = roles
+      store.userInfo = decoded
+      window.localStorage.setItem("userInfo", JSON.stringify(decoded))
+      store.getAuthButtonList() //在登录的时候获取按钮级别权限
+      router.push({ path: "/" })
+    } else {
+      // 登录失败处理
+      alert(res?.msg || "登录失败")
     }
-
-    const resetForm = () => {}
-    return {
-      ruleForm,
-      submitForm,
-      resetForm,
-    }
-  },
+  } catch (e) {
+    console.error("登录错误:", e)
+    alert("登录失败: 网络错误或服务器异常")
+  }
 }
+
+const resetForm = () => {}
 </script>
 <style scope lang="less">
 .demo-ruleForm {

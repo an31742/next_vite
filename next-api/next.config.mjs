@@ -1,21 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 禁用页面渲染
-  pageExtensions: ['api.ts', 'api.tsx'],
-  
+  pageExtensions: ["tsx", "ts", "jsx", "js"],
+
   // 配置头部
   async headers() {
     return [
       {
-        source: '/api/:path*',
+        source: "/api/:path*",
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: 'http://localhost:5173' },
-          { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
-          { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Content-Type', value: 'application/json' }
-        ]
-      }
+          { key: "Access-Control-Allow-Origin", value: "http://localhost:5173" },
+          { key: "Access-Control-Allow-Methods", value: "GET, POST, OPTIONS" },
+          { key: "Access-Control-Allow-Headers", value: "Content-Type, Authorization" },
+          { key: "Access-Control-Allow-Credentials", value: "true" },
+          { key: "Content-Type", value: "application/json" },
+        ],
+      },
     ]
   },
 
@@ -23,11 +23,11 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: '/api/:path*'
-      }
+        source: "/api/:path*",
+        destination: "/api/:path*",
+      },
     ]
-  }
+  },
 }
 
 export default nextConfig

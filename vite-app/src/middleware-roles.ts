@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from "jwt-decode"
 export interface JwtPayload {
   exp?: number
   iat?: number
@@ -13,15 +13,17 @@ export interface JwtPayload {
  * @returns boolean
  */
 export function hasRole(token: string, roles: string | string[]): boolean {
+  console.log("token", token)
+  console.log("roles", roles)
   if (!token) return false
   try {
     const decoded = jwtDecode<JwtPayload>(token)
-    const userRoles = decoded.roles || []
-    if (typeof roles === 'string') {
+    const userRoles = decoded.role || []
+    if (typeof roles === "string") {
       return userRoles.includes(roles)
     }
     return roles.some((role) => userRoles.includes(role))
   } catch (e) {
     return false
   }
-} 
+}

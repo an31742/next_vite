@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server"
 import jwt from "jsonwebtoken"
-
+import { getCurrentDateTime } from "../../../utils/auth"
 export const dynamic = "force-dynamic" // 强制动态路由
 export const runtime = "nodejs" // 指定 Node.js 运行时
 
 // 定义当前时间和用户
-const CURRENT_TIME = "2025-07-20 20:08:49"
+const CURRENT_TIME = getCurrentDateTime()
 const CURRENT_USER = "admin"
-const JWT_SECRET = "admin_secret_key_2025_07_20"
+const JWT_SECRET = "admin_secret"
 
 export async function POST(request: Request) {
   // 设置响应头
@@ -24,16 +24,16 @@ export async function POST(request: Request) {
     const body = await request.json()
     console.log("Received request body:", body)
 
-    const { userName, passWord } = body
+    const { name, password } = body
 
     // 验证用户名和密码
-    if (userName === CURRENT_USER && passWord === "12345") {
+    if (name === CURRENT_USER && password === "12345") {
       const token = jwt.sign(
         {
           userId: 1,
-          userName,
+          name,
           loginTime: CURRENT_TIME,
-          role: "admin",
+          role: ["admin", "user", "super-management"],
         },
         JWT_SECRET,
         { expiresIn: "24h" }
@@ -48,8 +48,8 @@ export async function POST(request: Request) {
             token,
             user: {
               userId: 1,
-              userName,
-              role: "admin",
+              name,
+              role: ["admin", "user", "super-management"],
               loginTime: CURRENT_TIME,
             },
           },
