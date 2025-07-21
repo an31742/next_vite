@@ -2,16 +2,6 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/next-api/app/api/$1" },
     { "source": "/(.*)", "destination": "/vite-app/$1" }
-  ],
-  "projects": [
-    {
-      "src": "next-api/package.json",
-      "use": "@vercel/next"
-    },
-    {
-      "src": "vite-app/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
-    }
   ]
+
 } 
