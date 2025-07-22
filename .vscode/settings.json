@@ -1,0 +1,5 @@
+{
+    "bitoAI.codeCompletion.enableAutoCompletion": false,
+    "workbench.editor.tabActionLocation": "left",
+    "workbench.sideBar.location": "right"
+}

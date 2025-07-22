@@ -1,7 +1,24 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/next-api/app/api/$1" },
-    { "source": "/(.*)", "destination": "/vite-app/$1" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/next-api/app/api/$1"
+    },
+    {
+      "source": "/streaming/(.*)",
+      "destination": "/next-api/app/streaming/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/vite-app/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/next-api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
   ]
-
-} 
+}
