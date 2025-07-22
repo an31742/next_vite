@@ -19,6 +19,24 @@
       "headers": [
         { "key": "Cache-Control", "value": "no-store" }
       ]
+    },
+    {
+      "source": "/**/*.js",
+      "headers": [
+        { "key": "Content-Type", "value": "application/javascript" }
+      ]
+    },
+    {
+      "source": "/**/*.mjs",
+      "headers": [
+        { "key": "Content-Type", "value": "application/javascript" }
+      ]
+    },
+    {
+      "source": "/**/*.cjs",
+      "headers": [
+        { "key": "Content-Type", "value": "application/javascript" }
+      ]
     }
   ]
 }
