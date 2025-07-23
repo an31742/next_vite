@@ -42,4 +42,18 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+
+import { withSentryConfig } from '@sentry/nextjs';
+
+export default withSentryConfig(nextConfig, {
+  // Sentry构建配置
+  silent: true,
+  org: "your-organization-slug",
+  project: "your-project-slug",
+}, {
+  // 运行时配置
+  dsn: "https://your-sentry-dsn.sentry.io/123",
+  tracesSampleRate: 1.0,
+  autoInstrumentServerFunctions: true,
+  autoInstrumentAppDirectory: true,
+}); 
