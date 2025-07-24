@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function Loading() {
     return (
       <div className="p-4 bg-gray-100 rounded-lg animate-pulse">

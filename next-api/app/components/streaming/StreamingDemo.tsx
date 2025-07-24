@@ -1,7 +1,7 @@
-import { Suspense } from 'react'
+import React, { Suspense } from 'react'
 import SlowComponent from './SlowStreamingDemo'
 import FastComponent from './FastStreamingDemo'
-import Loading from './Loading.'
+import Loading from './Loading' // 修复文件扩展名错误
 
 // 此组件展示了数据流（Streaming）的工作原理。React 的 Suspense 组件用于处理异步操作，
 // 当组件处于挂起状态（例如正在加载数据）时，会显示 fallback 指定的内容。
