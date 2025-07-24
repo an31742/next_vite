@@ -2,7 +2,8 @@
 
 import React from 'react';
 import * as Sentry from '@sentry/nextjs';
-import { Button } from './components/ui/Button';
+// Fix import path by removing non-existent 'ui' directory
+import { Button } from './components/Button';
 
 export default function GlobalError({ error, reset }: {
   error: Error & { digest?: string };
@@ -19,9 +20,13 @@ export default function GlobalError({ error, reset }: {
         <div className="flex flex-col items-center justify-center min-h-screen p-4">
           <h2 className="text-2xl font-bold mb-4">发生错误</h2>
           <p className="text-gray-600 mb-6">{error.message}</p>
-          <Button onClick={reset} variant="primary">
+          {/* Replace with standard button if component doesn't exist */}
+          <button 
+            onClick={reset} 
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
             尝试恢复
-          </Button>
+          </button>
         </div>
       </body>
     </html>
