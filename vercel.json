@@ -17,25 +17,37 @@
     {
       "source": "/next-api/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store" }
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
       ]
     },
     {
-      "source": "/**/*.js",
+      "source": "/(.*).js",
       "headers": [
-        { "key": "Content-Type", "value": "application/javascript" }
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
       ]
     },
     {
-      "source": "/**/*.mjs",
+      "source": "/(.*).mjs",
       "headers": [
-        { "key": "Content-Type", "value": "application/javascript" }
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
       ]
     },
     {
-      "source": "/**/*.cjs",
+      "source": "/(.*).cjs",
       "headers": [
-        { "key": "Content-Type", "value": "application/javascript" }
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
       ]
     }
   ]
