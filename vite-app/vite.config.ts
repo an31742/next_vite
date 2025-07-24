@@ -9,6 +9,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx"
 const API_PROXY_TARGET = process.env.VITE_API_PROXY || "http://localhost:9527"
 
 export default defineConfig({
+  base: "/",
   build: {
     outDir: "dist",
   },
