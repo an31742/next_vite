@@ -6,6 +6,10 @@
       "config": {
         "distDir": "dist"
       }
+    },
+    {
+      "src": "next-api/package.json",
+      "use": "@vercel/next"
     }
   ],  
   "rewrites": [
