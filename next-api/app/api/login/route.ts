@@ -80,7 +80,7 @@ export async function POST(request: Request) {
       JSON.stringify({
         code: 500,
         message: "服务器错误",
-        error: process.env.NODE_ENV === "development" ? error.message : undefined,
+        error: process.env.NODE_ENV === "development" && error instanceof Error ? error.message : undefined,
       }),
       {
         status: 500,
