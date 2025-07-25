@@ -62,7 +62,6 @@ setupAutoRefreshToken()
 const app = createApp(App)
 // 注册element Icons组件
 Object.keys(ElementPlusIconsVue).forEach((key) => {
-  console.log("key: ", key)
   app.component(key, ElementPlusIconsVue[key as keyof typeof ElementPlusIconsVue])
 })
 

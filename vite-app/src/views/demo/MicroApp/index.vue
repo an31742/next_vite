@@ -13,6 +13,7 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { MicroSandbox } from "@/utils/core/index.ts"
+import { SandboxMessenger } from "@/utils/core/sandbox-messaging.js"
 
 // 状态管理
 const container = ref(null)
@@ -39,7 +40,7 @@ const cleanUpPreviousApp = () => {
 const loadApp = async (appName) => {
   try {
     // 1. 基本验证
-    if (!appName || !['app1', 'app2'].includes(appName)) {
+    if (!appName || !["app1", "app2"].includes(appName)) {
       throw new Error(`不支持的应用名称: ${appName}，仅支持app1/app2`)
     }
 
@@ -53,6 +54,13 @@ const loadApp = async (appName) => {
     }
 
     // 4. 加载HTML内容 (使用项目中实际存在的public目录下的HTML文件)
+    //     - 本质是：Vite开发服务器通过 server.proxy 配置实现了API请求代理，但未直接配置 /micro-*.html 路径映射
+    // - 未在 `vite.config.ts` 中发现针对 /micro-*.html 的显式映射配置
+    // - 当前配置仅包含：
+    // 1. 1.
+    //    `alias` ：源码目录别名映射
+    // 2. 2.
+    //    `proxy` ：仅对 /api 路径进行代理
     const htmlUrl = `/micro-${appName}.html`
     console.log(`开始加载微应用: ${htmlUrl}`)
 
@@ -73,25 +81,78 @@ const loadApp = async (appName) => {
     // 6. 清空并添加新内容
     container.value.appendChild(wrapper)
 
-    // 7. 初始化沙箱
-    const sandbox = new MicroSandbox(appName)
-    sandboxInstances.value[appName] = sandbox
+    // 7. 初始化沙箱和通信通道
+    const sandbox = new MicroSandbox(appName);
+    sandboxInstances.value[appName] = sandbox;
 
-    // 8. 执行脚本
-    const scripts = wrapper.querySelectorAll("script")
+    // 修复：确保messenger变量正确声明并保持作用域
+    const messenger = new SandboxMessenger(appName, window.location.origin);
+    sandboxInstances.value[appName].messenger = messenger;
+
+    // 注册消息处理器 - 修复语法错误确保链式调用完整
+    messenger
+      .on('app-loaded', async (data) => {
+        console.log('子应用加载完成:', data);
+        // 添加消息发送代码验证
+        messenger.send('sandbox-message-data-update', {
+          message: '测试触发子应用事件',
+          timestamp: Date.now()
+        });
+        messenger.send('data-update', {
+          message: `欢迎使用${appName}`,
+          timestamp: new Date().toISOString(),
+          config: {
+            theme: 'light',
+            permissions: ['read', 'write']
+          }
+        });
+      })
+      .on('app-status', (status) => {
+        console.log(`微应用${appName}状态:`, status);
+        if (status.currentState.includes('错误')) {
+          errorMessage.value = `子应用错误: ${status.currentState}`;
+        }
+      })
+      .on('data-request', (data) => {
+        return {
+          result: `来自主应用的数据: ${Date.now()}`,
+          userInfo: {
+            name: '主应用用户',
+            role: 'admin'
+          }
+        };
+      })
+      .on('error', (error) => {
+        console.error(`微应用${appName}错误:`, error);
+        errorMessage.value = `[${new Date().toLocaleTimeString()}] 微应用错误: ${error.message}`;
+      });
+
+    // 8. 执行脚本和iframe处理
+    const scripts = wrapper.querySelectorAll("script");
     if (scripts.length === 0) {
-      console.warn("微应用中未找到脚本标签")
+      console.warn("微应用中未找到脚本标签");
     }
 
     for (const script of scripts) {
-      const code = script.innerHTML
+      const code = script.innerHTML;
       if (code.trim()) {
-        sandbox.execScript(code, wrapper)
+        sandbox.execScript(code, wrapper);
       }
     }
 
-    console.log(`微应用 ${appName} 加载成功`)
+    // 新增：连接到iframe并发送端口
+    // 修复：确保messenger在此处仍在作用域内
+    const iframe = wrapper.querySelector('iframe');
+    if (iframe) {
+      const port2 = messenger.connectToIframe(iframe);
+      iframe.contentWindow.postMessage(
+        { type: 'sandbox-connect' },
+        window.location.origin,
+        [port2]
+      );
+    }
 
+    console.log(`微应用 ${appName} 加载成功`);
   } catch (err) {
     // 集中错误处理
     const errorDetails = `[${new Date().toLocaleTimeString()}] ${err.message}`
@@ -108,9 +169,9 @@ onMounted(() => {
     errorMessage.value = "MicroSandbox未找到，请检查@/utils/core/index.ts"
   }
   // 验证public目录下的微应用文件是否存在
-  ['app1', 'app2'].forEach(app => {
+  ;["app1", "app2"].forEach((app) => {
     fetch(`/micro-${app}.html`)
-      .then(res => !res.ok && console.warn(`微应用文件可能不存在: /micro-${app}.html`))
+      .then((res) => !res.ok && console.warn(`微应用文件可能不存在: /micro-${app}.html`))
       .catch(() => console.error(`无法访问微应用文件: /micro-${app}.html`))
   })
 })
