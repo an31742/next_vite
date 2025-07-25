@@ -143,6 +143,19 @@ const routes = {
         },
       ],
     },
+    {
+      path: "/demo/microApp",
+      name: "MicroApp",
+      hidde: false,
+      component: () => import("@/views/demo/MicroApp/index.vue"),
+      asideVisible: false,
+      meta: {
+        title: "microApp",
+        icon: markRaw(Box),
+        activeMenu: "microApp",
+        anchors: "admin",
+      },
+    }
   ],
 }
 

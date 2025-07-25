@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>微前端沙箱演示</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+
+      .app-container {
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        padding: 10px;
+      }
+
+      .micro-app-a h2 {
+        color: red;
+      }
+
+      .micro-app-b h2 {
+        color: green;
+      }
+
+      button {
+        margin: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>主应用</h1>
+
+    <div>
+      <button onclick="mountApp('A')">挂载子应用 A</button>
+      <button onclick="unmountApp('A')">卸载子应用 A</button>
+
+      <button onclick="mountApp('B')">挂载子应用 B</button>
+      <button onclick="unmountApp('B')">卸载子应用 B</button>
+    </div>
+
+    <div id="app-A" class="app-container"></div>
+    <div id="app-B" class="app-container"></div>
+
+    <script>
+      // ==== 1️⃣ 沙箱类 ====
+      class MicroSandbox {
+        constructor(name) {
+          this.name = name
+          this.fakeWindow = {}
+          this.active = false
+
+          const self = this
+
+          this.proxy = new Proxy(window, {
+            get(target, key) {
+              return self.active ? (key in self.fakeWindow ? self.fakeWindow[key] : target[key]) : target[key]
+            },
+            set(target, key, value) {
+              if (self.active) {
+                self.fakeWindow[key] = value
+              } else {
+                target[key] = value
+              }
+              return true
+            },
+            has(target, key) {
+              return key in self.fakeWindow || key in target
+            },
+          })
+        }
+
+        start() {
+          this.active = true
+          console.log(`[沙箱:${this.name}] 启动`)
+        }
+
+        stop() {
+          this.active = false
+          this.fakeWindow = {}
+          console.log(`[沙箱:${this.name}] 停止`)
+        }
+
+        getProxy() {
+          return this.proxy
+        }
+      }
+
+      // ==== 2️⃣ 样式作用域封装 ====
+      function scopeCSS(cssText, scopeClass) {
+        return cssText.replace(/([^\r\n,{}]+)(,(?=[^}]*{)|\s*{)/g, (match, selector, brace) => {
+          if (selector.includes(`.${scopeClass}`)) return match
+          return `.${scopeClass} ${selector}${brace}`
+        })
+      }
+
+      // ==== 3️⃣ 子应用定义 ====
+      const microApps = {
+        A: {
+          container: "app-A",
+          class: "micro-app-a",
+          html: `<div><h2>我是子应用 A</h2><p>testGlobal = <span id="val-A"></span></p></div>`,
+          style: `h2 { font-size: 22px; }`,
+          script: `
+          proxy.testGlobal = "A123"
+          document.getElementById("val-A").innerText = proxy.testGlobal
+        `,
+        },
+        B: {
+          container: "app-B",
+          class: "micro-app-b",
+          html: `<div><h2>我是子应用 B</h2><p>testGlobal = <span id="val-B"></span></p></div>`,
+          style: `h2 { font-size: 18px; }`,
+          script: `
+          proxy.testGlobal = "B456"
+          document.getElementById("val-B").innerText = proxy.testGlobal
+        `,
+        },
+      }
+
+      const sandboxes = {}
+
+      // ==== 4️⃣ 挂载函数 ====
+      function mountApp(name) {
+        const app = microApps[name]
+        const container = document.getElementById(app.container)
+
+        if (!sandboxes[name]) {
+          sandboxes[name] = new MicroSandbox(name)
+        }
+
+        const sandbox = sandboxes[name]
+        sandbox.start()
+        const proxy = sandbox.getProxy()
+
+        container.className = `app-container ${app.class}`
+        container.innerHTML = app.html
+
+        // 动态插入 scoped style
+        const scopedStyle = scopeCSS(app.style, app.class)
+        const styleEl = document.createElement("style")
+        styleEl.textContent = scopedStyle
+        container.appendChild(styleEl)
+
+        // 用 proxy 作为沙箱环境执行代码
+        const scriptFn = new Function("proxy", app.script)
+        scriptFn(proxy)
+      }
+
+      // ==== 5️⃣ 卸载函数 ====
+      function unmountApp(name) {
+        const app = microApps[name]
+        const container = document.getElementById(app.container)
+        container.innerHTML = ""
+        if (sandboxes[name]) sandboxes[name].stop()
+      }
+    </script>
+  </body>
+</html>
