@@ -155,6 +155,19 @@ const routes = {
         activeMenu: "microApp",
         anchors: "admin",
       },
+    },
+     {
+      path: "/demo/MicroAppMessage",
+      name: "MicroAppMessage",
+      hidde: false,
+      component: () => import("@/views/demo/MicroAppMessage/MicroAppIframe.vue"),
+      asideVisible: false,
+      meta: {
+        title: "MicroAppMessage",
+        icon: markRaw(Box),
+        activeMenu: "MicroAppMessage",
+        anchors: "admin",
+      },
     }
   ],
 }

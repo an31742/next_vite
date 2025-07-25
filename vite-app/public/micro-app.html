@@ -1,0 +1,28 @@
+<!-- public/micro-app.html -->
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>子应用</title>
+    <script type="module">
+      // 引入通信模块
+      window.addEventListener("message", (event) => {
+        if (event.origin !== location.origin) return
+        if (event.data.type === "main-ping") {
+          console.log("[子应用] 收到主应用消息:", event.data)
+          event.source.postMessage(
+            {
+              type: "micro-hello",
+              source: "micro-app",
+              data: { msg: "你好主应用 ✨" },
+            },
+            event.origin
+          )
+        }
+      })
+    </script>
+  </head>
+  <body>
+    <h2>子应用（iframe 页面）</h2>
+  </body>
+</html>
