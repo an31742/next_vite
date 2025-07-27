@@ -5,6 +5,7 @@ import AutoImport from "unplugin-auto-import/vite"
 import Components from "unplugin-vue-components/vite"
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers"
 import vueJsx from "@vitejs/plugin-vue-jsx"
+import wasm from 'vite-plugin-wasm';
 
 const API_PROXY_TARGET = process.env.VITE_API_PROXY || "http://localhost:9527"
 
@@ -14,6 +15,7 @@ export default defineConfig({
     outDir: "dist",
   },
   plugins: [
+    wasm(),
     vue(),
     vueJsx(),
     AutoImport({

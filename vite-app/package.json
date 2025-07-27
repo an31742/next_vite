@@ -13,6 +13,7 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "@dimforge/rapier3d": "^0.18.0",
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.5.0",
     "element-plus": "^2.10.4",
@@ -21,15 +22,20 @@
     "pinia-plugin-persistedstate": "^3.2.0",
     "sass": "^1.66.1",
     "sass-loader": "^13.3.2",
+    "three": "^0.178.0",
+    "three-mesh-bvh": "^0.9.1",
+    "vite-plugin-wasm": "^3.5.0",
     "vue": "^3.3.4",
     "vue-router": "4",
     "vue3-virtual-scroller": "^0.2.3",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "wasm-loader": "^1.3.0"
   },
   "devDependencies": {
     "@types/jwt-decode": "^3.1.0",
     "@types/node": "^20.14.2",
     "@types/nprogress": "^0.2.0",
+    "@types/three": "^0.178.1",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
     "@vitejs/plugin-vue": "^5.0.4",

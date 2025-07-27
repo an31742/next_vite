@@ -59,7 +59,7 @@ const routes = {
         activeMenu: "vue3",
         anchors: "admin", //设计前端权限
       },
-     
+
       children: [
         {
           path: "/demo/vue3/authTable",
@@ -156,7 +156,7 @@ const routes = {
         anchors: "admin",
       },
     },
-     {
+    {
       path: "/demo/MicroAppMessage",
       name: "MicroAppMessage",
       hidde: false,
@@ -168,7 +168,33 @@ const routes = {
         activeMenu: "MicroAppMessage",
         anchors: "admin",
       },
-    }
+    },
+    {
+      path: "/demo/PhysicsScene",
+      name: "PhysicsScene",
+      hidde: false,
+      component: () => import("@/views/demo/PhysicsScene/index.vue"),
+      asideVisible: false,
+      meta: {
+        title: "PhysicsScene",
+        icon: markRaw(Box),
+        activeMenu: "PhysicsScene",
+        anchors: "admin",
+      },
+    },
+    {
+      path: "/demo/PhysicsOctreeScene",
+      name: "PhysicsOctreeScene",
+      hidde: false,
+      component: () => import("@/views/demo/PhysicsOctreeScene.vue"),
+      asideVisible: false,
+      meta: {
+        title: "PhysicsOctreeScene",
+        icon: markRaw(Box),
+        activeMenu: "PhysicsOctreeScene",
+        anchors: "admin",
+      },
+    },
   ],
 }
 
