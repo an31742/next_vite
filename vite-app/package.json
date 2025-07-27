@@ -17,6 +17,7 @@
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.5.0",
     "element-plus": "^2.10.4",
+    "glslify": "^7.1.1",
     "html2canvas": "^1.4.1",
     "pinia": "^2.1.6",
     "pinia-plugin-persistedstate": "^3.2.0",
@@ -52,6 +53,7 @@
     "unplugin-element-plus": "^0.8.0",
     "unplugin-vue-components": "^0.25.1",
     "vite": "^5.2.10",
+    "vite-plugin-glsl": "^1.5.1",
     "vue-svg-icon": "^1.2.9",
     "vue-tsc": "^3.0.3",
     "vuex": "^4.1.0"

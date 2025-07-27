@@ -195,6 +195,19 @@ const routes = {
         anchors: "admin",
       },
     },
+    {
+      path: "/demo/ParticleCanvas",
+      name: "ParticleCanvas",
+      hidde: false,
+      component: () => import("@/views/demo/ParticleCanvas/index.vue"),
+      asideVisible: false,
+      meta: {
+        title: "ParticleCanvas",
+        icon: markRaw(Box),
+        activeMenu: "ParticleCanvas",
+        anchors: "admin",
+      },
+    },
   ],
 }
 

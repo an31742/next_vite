@@ -1,0 +1,659 @@
+<template>
+  <header>
+    <h1>WebGL着色器高级应用</h1>
+    <p class="subtitle">基于Vue3 + TypeScript实现粒子系统优化与着色器材质动画，参考《The Book of Shaders》原理</p>
+  </header>
+
+  <div class="container">
+    <div class="sidebar">
+      <h2>高级着色器应用</h2>
+      <div class="nav-item" :class="{ active: activeTab === 'particle' }" @click="activeTab = 'particle'"><i>🔆</i> 粒子系统优化</div>
+      <div class="nav-item" :class="{ active: activeTab === 'material' }" @click="activeTab = 'material'"><i>🌈</i> 着色器材质动画</div>
+    </div>
+
+    <div class="content">
+      <div class="demo-container">
+        <canvas ref="canvas"></canvas>
+        <div class="stats" v-if="stats">
+          粒子数: <span class="particle-count">{{ particleCount }}</span
+          ><br />
+          FPS: {{ fps.toFixed(1) }}
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control-group" v-if="activeTab === 'particle'">
+          <label>粒子数量: {{ particleCount }}</label>
+          <input type="range" min="1000" max="50000" step="1000" v-model.number="particleCount" />
+        </div>
+
+        <div class="control-group" v-if="activeTab === 'particle'">
+          <label>粒子大小: {{ particleSize.toFixed(1) }}</label>
+          <input type="range" min="0.1" max="5.0" step="0.1" v-model.number="particleSize" />
+        </div>
+
+        <div class="control-group" v-if="activeTab === 'particle'">
+          <label>速度: {{ particleSpeed.toFixed(1) }}</label>
+          <input type="range" min="0.1" max="5.0" step="0.1" v-model.number="particleSpeed" />
+        </div>
+
+        <div class="control-group" v-if="activeTab === 'material'">
+          <label>动画速度: {{ animationSpeed.toFixed(1) }}</label>
+          <input type="range" min="0.1" max="3.0" step="0.1" v-model.number="animationSpeed" />
+        </div>
+
+        <div class="control-group" v-if="activeTab === 'material'">
+          <label>噪波强度: {{ noiseIntensity.toFixed(1) }}</label>
+          <input type="range" min="0.1" max="2.0" step="0.1" v-model.number="noiseIntensity" />
+        </div>
+
+        <div class="control-group" v-if="activeTab === 'material'">
+          <label>颜色变化: {{ colorChange.toFixed(1) }}</label>
+          <input type="range" min="0.1" max="3.0" step="0.1" v-model.number="colorChange" />
+        </div>
+      </div>
+
+      <div class="info-panel">
+        <h3><i>💻</i> 当前着色器代码</h3>
+        <pre>{{ shaderCode }}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>基于《The Book of Shaders》原理实现 | Vue3 + TypeScript + Three.js | WebGL高级着色器应用</p>
+    <p>© 2023 WebGL着色器演示 | 使用GPU加速的粒子系统和实时材质动画</p>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, watch } from "vue"
+import * as THREE from "three"
+const vertexShaderParticles = `
+      attribute float size;
+      attribute vec3 customColor;
+
+      varying vec3 vColor;
+
+      void main() {
+        vColor = customColor;
+
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+
+        gl_PointSize = size * (300.0 / -mvPosition.z);
+        gl_Position = projectionMatrix * mvPosition;
+      }
+    `
+
+const fragmentShaderParticles = `
+      varying vec3 vColor;
+
+      void main() {
+        float distance = length(gl_PointCoord - vec2(0.5, 0.5));
+        if (distance > 0.5) {
+          discard;
+        }
+
+        gl_FragColor = vec4(vColor, 1.0);
+
+        // 添加发光效果
+        float glow = pow(1.0 - distance * 2.0, 4.0);
+        gl_FragColor.rgb += glow * vColor * 0.5;
+      }
+    `
+
+const vertexShaderMaterial = `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `
+
+const fragmentShaderMaterial = `
+      uniform float time;
+      uniform float noiseIntensity;
+      uniform float colorChange;
+
+      varying vec2 vUv;
+
+      // 噪波函数
+      float noise(vec2 p) {
+        return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+      }
+
+      void main() {
+        vec2 uv = vUv * 4.0;
+
+        // 动态噪声
+        float n = noise(uv + time * 0.5);
+
+        // 创建流动效果
+        vec2 flow = vec2(
+          noise(uv + time * 0.3),
+          noise(uv + time * 0.4 + 0.5)
+        ) * 2.0 - 1.0;
+
+        uv += flow * noiseIntensity * 0.2;
+
+        // 创建颜色
+        vec3 color = vec3(
+          sin(uv.x * 2.0 + time * colorChange),
+          cos(uv.y * 1.5 + time * colorChange * 0.7),
+          sin((uv.x + uv.y) * 1.2 + time * colorChange * 0.5)
+        );
+
+        color = 0.5 + 0.5 * color;
+
+        // 添加噪声纹理
+        color *= 0.8 + 0.4 * n;
+
+        // 边缘变暗
+        vec2 center = vec2(0.5, 0.5);
+        float dist = distance(vUv, center);
+        color *= 1.0 - dist * 0.8;
+
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `
+
+const canvas = ref(null)
+const activeTab = ref("particle")
+const particleCount = ref(10000)
+const particleSize = ref(2.0)
+const particleSpeed = ref(1.0)
+const animationSpeed = ref(1.0)
+const noiseIntensity = ref(1.0)
+const colorChange = ref(1.0)
+const stats = ref(false)
+const fps = ref(60)
+
+const shaderCode = ref(vertexShaderParticles + "\n\n" + fragmentShaderParticles)
+
+// Three.js 变量
+let scene, camera, renderer, particles, material, plane
+let clock = new THREE.Clock()
+
+// 初始化Three.js场景
+const initScene = () => {
+  // 如果已有场景，先清除
+  if (renderer) {
+    renderer.dispose()
+  }
+
+  // 创建场景
+  scene = new THREE.Scene()
+  scene.background = new THREE.Color(0x0a0a15)
+
+  // 创建相机
+  camera = new THREE.PerspectiveCamera(75, canvas.value.clientWidth / canvas.value.clientHeight, 0.1, 1000)
+  camera.position.z = 30
+
+  // 创建渲染器
+  renderer = new THREE.WebGLRenderer({
+    canvas: canvas.value,
+    antialias: true,
+    alpha: true,
+  })
+  renderer.setSize(canvas.value.clientWidth, canvas.value.clientHeight)
+  renderer.setPixelRatio(window.devicePixelRatio)
+
+  // 添加光源
+  const ambientLight = new THREE.AmbientLight(0x333366)
+  scene.add(ambientLight)
+
+  const pointLight = new THREE.PointLight(0x4a86ff, 1, 100)
+  pointLight.position.set(10, 20, 15)
+  scene.add(pointLight)
+
+  // 初始化粒子系统
+  initParticles()
+
+  // 初始化材质动画
+  initMaterialAnimation()
+
+  // 显示粒子系统
+  showActiveTab()
+
+  // 添加窗口大小变化监听
+  window.addEventListener("resize", onWindowResize)
+
+  // 开始动画循环
+  stats.value = true
+  animate()
+}
+
+// 初始化粒子系统
+const initParticles = () => {
+  if (particles) {
+    scene.remove(particles)
+  }
+
+  const geometry = new THREE.BufferGeometry()
+
+  // 创建粒子位置、颜色和大小
+  const positions = new Float32Array(particleCount.value * 3)
+  const colors = new Float32Array(particleCount.value * 3)
+  const sizes = new Float32Array(particleCount.value)
+
+  const color = new THREE.Color()
+
+  for (let i = 0; i < particleCount.value; i++) {
+    // 位置
+    positions[i * 3] = (Math.random() - 0.5) * 100
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 100
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 100
+
+    // 颜色 - 蓝色调
+    color.setHSL(0.6 + Math.random() * 0.1, 0.8, 0.5)
+    colors[i * 3] = color.r
+    colors[i * 3 + 1] = color.g
+    colors[i * 3 + 2] = color.b
+
+    // 大小
+    sizes[i] = particleSize.value * (0.5 + Math.random() * 0.5)
+  }
+
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
+  geometry.setAttribute("customColor", new THREE.BufferAttribute(colors, 3))
+  geometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1))
+
+  // 创建材质
+  const material = new THREE.ShaderMaterial({
+    vertexShader: vertexShaderParticles,
+    fragmentShader: fragmentShaderParticles,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+
+  // 创建粒子系统
+  particles = new THREE.Points(geometry, material)
+}
+
+// 初始化材质动画
+const initMaterialAnimation = () => {
+  if (plane) {
+    scene.remove(plane)
+  }
+
+  // 创建几何体
+  const geometry = new THREE.PlaneGeometry(40, 40, 100, 100)
+
+  // 创建材质
+  material = new THREE.ShaderMaterial({
+    vertexShader: vertexShaderMaterial,
+    fragmentShader: fragmentShaderMaterial,
+    uniforms: {
+      time: { value: 0.0 },
+      noiseIntensity: { value: noiseIntensity.value },
+      colorChange: { value: colorChange.value },
+    },
+    wireframe: false,
+    side: THREE.DoubleSide,
+  })
+
+  // 创建网格
+  plane = new THREE.Mesh(geometry, material)
+  plane.rotation.x = -Math.PI / 4
+}
+
+// 显示当前选中的标签内容
+const showActiveTab = () => {
+  if (activeTab.value === "particle") {
+    if (plane) scene.remove(plane)
+    if (particles) scene.add(particles)
+    shaderCode.value = vertexShaderParticles + "\n\n" + fragmentShaderParticles
+  } else {
+    if (particles) scene.remove(particles)
+    if (plane) scene.add(plane)
+    shaderCode.value = vertexShaderMaterial + "\n\n" + fragmentShaderMaterial
+  }
+}
+
+// 窗口大小变化处理
+const onWindowResize = () => {
+  camera.aspect = canvas.value.clientWidth / canvas.value.clientHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(canvas.value.clientWidth, canvas.value.clientHeight)
+}
+
+// 动画循环
+const animate = () => {
+  requestAnimationFrame(animate)
+
+  const delta = clock.getDelta()
+  const time = clock.getElapsedTime()
+
+  // 计算FPS
+  fps.value = 1 / delta
+
+  // 更新粒子系统
+  if (activeTab.value === "particle" && particles) {
+    const positions = particles.geometry.attributes.position.array
+
+    for (let i = 0; i < particleCount.value; i++) {
+      // 更新粒子位置
+      positions[i * 3] += (Math.random() - 0.5) * particleSpeed.value * 0.2
+      positions[i * 3 + 1] += (Math.random() - 0.5) * particleSpeed.value * 0.2
+      positions[i * 3 + 2] += (Math.random() - 0.5) * particleSpeed.value * 0.2
+
+      // 边界检查
+      if (Math.abs(positions[i * 3]) > 50) positions[i * 3] *= -0.9
+      if (Math.abs(positions[i * 3 + 1]) > 50) positions[i * 3 + 1] *= -0.9
+      if (Math.abs(positions[i * 3 + 2]) > 50) positions[i * 3 + 2] *= -0.9
+    }
+
+    particles.geometry.attributes.position.needsUpdate = true
+
+    // 旋转相机
+    camera.position.x = Math.sin(time * 0.3) * 40
+    camera.position.z = Math.cos(time * 0.3) * 40
+    camera.lookAt(scene.position)
+  }
+
+  // 更新材质动画
+  if (activeTab.value === "material" && material) {
+    material.uniforms.time.value = time * animationSpeed.value
+    material.uniforms.noiseIntensity.value = noiseIntensity.value
+    material.uniforms.colorChange.value = colorChange.value
+
+    // 添加轻微旋转
+    plane.rotation.z = time * 0.1
+  }
+
+  renderer.render(scene, camera)
+}
+
+// 监听活动标签变化
+watch(activeTab, () => {
+  showActiveTab()
+})
+
+// 监听粒子数量变化
+watch(particleCount, (newVal) => {
+  if (activeTab.value === "particle") {
+    initParticles()
+    showActiveTab()
+  }
+})
+
+// 监听粒子大小变化
+watch(particleSize, () => {
+  if (activeTab.value === "particle" && particles) {
+    const sizes = particles.geometry.attributes.size.array
+
+    for (let i = 0; i < particleCount.value; i++) {
+      sizes[i] = particleSize.value * (0.5 + Math.random() * 0.5)
+    }
+
+    particles.geometry.attributes.size.needsUpdate = true
+  }
+})
+
+// 监听粒子速度变化
+watch(particleSpeed, () => {
+  // 不需要特别处理，在动画循环中使用
+})
+
+// 监听材质动画参数变化
+watch([animationSpeed, noiseIntensity, colorChange], () => {
+  // 在动画循环中更新uniforms
+})
+
+// 组件挂载后初始化场景
+onMounted(() => {
+  initScene()
+})
+</script>
+<style scoped>
+:root {
+  --primary: #3a86ff;
+  --secondary: #8338ec;
+  --dark: #1a1a2e;
+  --darker: #0d0d1a;
+  --light: #e6f7ff;
+  --accent: #ff006e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, var(--darker), var(--dark));
+  color: var(--light);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#app {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  padding: 30px 0;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+h1 {
+  font-size: 2.8rem;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #a0a0cc;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 25px;
+}
+
+.sidebar {
+  background: rgba(30, 30, 60, 0.7);
+  border-radius: 15px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 100, 200, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--primary);
+  font-size: 1.4rem;
+}
+
+.nav-item {
+  padding: 15px 20px;
+  margin: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.nav-item i {
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+
+.nav-item:hover {
+  background: rgba(58, 134, 255, 0.15);
+}
+
+.nav-item.active {
+  background: rgba(58, 134, 255, 0.3);
+  color: var(--primary);
+  box-shadow: 0 0 15px rgba(58, 134, 255, 0.3);
+}
+
+.content {
+  background: rgba(25, 25, 45, 0.7);
+  border-radius: 15px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 100, 200, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.demo-container {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #0a0a15;
+  min-height: 500px;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.controls {
+  background: rgba(40, 40, 70, 0.7);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-group label {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #a0a0cc;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(100, 100, 200, 0.2);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(58, 134, 255, 0.6);
+}
+
+.info-panel {
+  background: rgba(20, 20, 40, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 25px;
+}
+
+.info-panel h3 {
+  color: var(--primary);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.info-panel h3 i {
+  margin-right: 10px;
+}
+
+.info-panel pre {
+  background: rgba(10, 10, 20, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: "Fira Code", monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  max-height: 250px;
+}
+
+.stats {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #4af;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: monospace;
+}
+
+.particle-count {
+  display: inline-block;
+  min-width: 80px;
+  text-align: right;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  color: #667;
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+}
+</style>
