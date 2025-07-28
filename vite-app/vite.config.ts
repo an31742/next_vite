@@ -13,6 +13,7 @@ export default defineConfig({
   base: "/",
   build: {
     outDir: "dist",
+    target: 'es2022', // 升级目标环境以支持Top-level await
   },
   plugins: [
     wasm(),

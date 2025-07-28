@@ -18,8 +18,8 @@ export class MicroSandbox {
         // 检查属性名是否为字符串，且是否存在于 fakeWindow 中
         if (typeof prop === "string" && prop in this.fakeWindow) return this.fakeWindow[prop]
         // 增强隔离：关键API需要显式允许访问
-        const allowedGlobals = ['document', 'console', 'setTimeout', 'clearTimeout']
-        if (typeof prop === 'string' && !allowedGlobals.includes(prop)) {
+        const allowedGlobals = ["document", "console", "setTimeout", "clearTimeout"]
+        if (typeof prop === "string" && !allowedGlobals.includes(prop)) {
           console.warn(`[${this.appName}] 尝试访问受限全局变量: ${prop}`)
           return undefined
         }
@@ -61,20 +61,20 @@ export class MicroSandbox {
   }
 
   scopeCSS(css: string): string {
-    // 改进选择器作用域处理
-    return css
-      // 处理常规选择器
-      .replace(/([^{}]+){/g, (match, selector) => {
-        // 跳过已包含作用域标识的选择器
-        if (selector.includes(`#micro-${this.appName}`)) return match
-        return `#micro-${this.appName} ${selector.trim()} {`
-      })
-      // 处理媒体查询
-      .replace(/@media([^{]+){/g, (match, media) => {
-        return `@media${media}{#micro-${this.appName}{`
-      })
-      // 闭合媒体查询添加的额外括号
-      .replace(/@media([^}]+})/g, '$1}')
+    return (
+      css
+        .replace(/([^{}]+){/g, (_match, selector) => {
+          // 使用下划线忽略未使用参数
+          if (selector.includes(`#micro-${this.appName}`)) return _match
+          return `#micro-${this.appName} ${selector.trim()} {`
+        })
+        // 处理媒体查询
+        .replace(/@media([^{]+){/g, (_match, media) => {
+          return `@media${media}{#micro-${this.appName}{`
+        })
+        // 闭合媒体查询添加的额外括号
+        .replace(/@media([^}]+})/g, "$1}")
+    )
   }
 
   private initSimulatedAPIs(): void {
@@ -95,16 +95,16 @@ export class MicroSandbox {
       clear: () => {
         // 只清除当前应用的存储
         Object.keys(window.localStorage)
-          .filter(key => key.startsWith(`${this.appName}_`))
-          .forEach(key => window.localStorage.removeItem(key))
-      }
+          .filter((key) => key.startsWith(`${this.appName}_`))
+          .forEach((key) => window.localStorage.removeItem(key))
+      },
     }
 
     // 模拟fetch请求拦截
     this.fakeWindow.fetch = async (input: RequestInfo, init?: RequestInit) => {
       console.log(`[${this.appName}] 拦截请求:`, input)
       // 添加应用标识头
-      const headers = { ...init?.headers, 'X-Micro-App': this.appName }
+      const headers = { ...init?.headers, "X-Micro-App": this.appName }
       return window.fetch(input, { ...init, headers })
     }
   }

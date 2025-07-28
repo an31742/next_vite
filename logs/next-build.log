@@ -1,311 +1,316 @@
-[0;34m[2025-07-25 09:21:35] 开始构建 next-api...[0m
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/console@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/core@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-config@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/diff-sequences@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/environment@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/environment-jsdom-abstract@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/expect@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/expect-utils@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/fake-timers@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/get-type@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/globals@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/pattern@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/reporters@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-worker@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/schemas@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/snapshot-utils@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/source-map@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/test-result@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/test-sequencer@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/transform@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: '@jest/types@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'babel-jest@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'babel-plugin-jest-hoist@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'babel-preset-jest@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'expect@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-changed-files@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-circus@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-cli@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-config@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-diff@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-docblock@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-each@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-environment-jsdom@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-environment-node@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-haste-map@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-worker@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-leak-detector@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-matcher-utils@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-message-util@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-mock@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-regex-util@30.0.1',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-resolve@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-resolve-dependencies@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-runner@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-worker@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-runtime@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-snapshot@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-util@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-validate@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'pretty-format@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
-npm WARN EBADENGINE Unsupported engine {
-npm WARN EBADENGINE   package: 'jest-watcher@30.0.5',
-npm WARN EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
-npm WARN EBADENGINE   current: { node: 'v21.7.3', npm: '10.5.0' }
-npm WARN EBADENGINE }
+[0;34m[2025-07-28 18:48:06] 开始构建 next-api...[0m
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'next-api@0.1.0',
+npm warn EBADENGINE   required: { node: '^20.0.0', npm: '^9.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/console@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/core@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-config@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/diff-sequences@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/environment@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/environment-jsdom-abstract@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/expect@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/expect-utils@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/fake-timers@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/get-type@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/globals@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/pattern@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/reporters@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-worker@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/schemas@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/snapshot-utils@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/source-map@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/test-result@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/test-sequencer@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/transform@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: '@jest/types@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'babel-jest@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'babel-plugin-jest-hoist@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'babel-preset-jest@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'expect@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-changed-files@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-circus@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-cli@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-config@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-diff@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-docblock@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-each@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-environment-jsdom@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-environment-node@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-haste-map@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-worker@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-leak-detector@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-matcher-utils@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-message-util@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-mock@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-regex-util@30.0.1',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-resolve@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-resolve-dependencies@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-runner@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-worker@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-runtime@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-snapshot@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-util@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-validate@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'pretty-format@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'jest-watcher@30.0.5',
+npm warn EBADENGINE   required: { node: '^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0' },
+npm warn EBADENGINE   current: { node: 'v21.7.3', npm: '10.8.3' }
+npm warn EBADENGINE }
 
-up to date in 563ms
+up to date in 584ms
 
 75 packages are looking for funding
   run `npm fund` for details
@@ -328,8 +333,8 @@ up to date in 563ms
    Linting and checking validity of types ...
    Collecting page data ...
    Generating static pages (0/10) ...
-Fetching fresh data...
    Generating static pages (2/10) 
+Fetching fresh data...
    Generating static pages (4/10) 
    Generating static pages (7/10) 
  ✓ Generating static pages (10/10) 
@@ -337,7 +342,7 @@ Fetching fresh data...
    Collecting build traces ...
 
 Route (app)                              Size     First Load JS
-┌ ○ /                                    309 B           176 kB
+┌ ○ /                                    311 B           176 kB
 ├ ○ /_not-found                          1.09 kB         177 kB
 ├ ○ /api                                 0 B                0 B
 ├ λ /api/cache-revalidate                0 B                0 B
@@ -347,9 +352,9 @@ Route (app)                              Size     First Load JS
 ├ λ /api/user                            0 B                0 B
 └ ○ /streaming                           310 B           176 kB
 + First Load JS shared by all            175 kB
-  ├ chunks/924-b64e9a3745fa013d.js       119 kB
+  ├ chunks/924-7e049f0a899da51c.js       119 kB
   ├ chunks/fd9d1056-f1f17af8f0f2f07f.js  53.4 kB
-  ├ chunks/main-app-736b9dad60065c1f.js  686 B
+  ├ chunks/main-app-6a266b5417d5a541.js  687 B
   └ chunks/webpack-fee8d1f5e6ca0197.js   1.89 kB
 
 
@@ -358,4 +363,4 @@ Route (app)                              Size     First Load JS
 ○  (Static)   prerendered as static content
 λ  (Dynamic)  server-rendered on demand using Node.js
 
-[0;32m[2025-07-25 09:22:12] next-api 构建成功！[0m
+[0;32m[2025-07-28 18:48:44] next-api 构建成功！[0m

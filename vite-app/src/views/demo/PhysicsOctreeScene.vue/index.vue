@@ -38,7 +38,10 @@ onMounted(() => {
     const nearObjects = octree.query(playerBox)
 
     nearObjects.forEach((obj) => {
-      ;(obj.material as THREE.MeshStandardMaterial).color.set(0xff0000)
+      const mesh = obj as THREE.Mesh
+      if (mesh.material instanceof THREE.MeshStandardMaterial) {
+        mesh.material.color.set(0xff0000)
+      }
     })
 
     renderer.render(scene, camera)
