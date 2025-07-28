@@ -13,7 +13,7 @@
     }
   ],  
   "rewrites": [
-     {"source": "/api/(.*)", "destination": "/next-api/app/api/$1"},
+     {"source": "/api/(.*)", "destination": "/next-api/api/$1"},
      {"source": "/streaming/(.*)", "destination": "/next-api/app/streaming/$1"},
      {"source": "/next-api/(.*)", "destination": "/next-api/$1"},
      {"source": "/(.*)", "destination": "/vite-app/$1"}
