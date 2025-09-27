@@ -17,6 +17,10 @@ import {
   COLLECTIONS
 } from '../../../../types/accounting';
 
+// 强制动态渲染
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // GET /api/transactions/[id] - 获取交易记录详情
 export async function GET(
   request: NextRequest,

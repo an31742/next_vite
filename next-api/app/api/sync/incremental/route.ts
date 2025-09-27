@@ -16,6 +16,10 @@ import {
   COLLECTIONS
 } from '../../../../types/accounting';
 
+// 强制动态渲染
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   try {
     const user = getUserFromRequest(request);

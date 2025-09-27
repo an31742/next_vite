@@ -18,6 +18,10 @@ import {
   COLLECTIONS
 } from '../../../types/accounting';
 
+// 强制动态渲染
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // GET /api/categories - 获取分类列表
 export async function GET(request: NextRequest) {
   try {
