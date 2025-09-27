@@ -1,20 +1,53 @@
 import { NextResponse } from "next/server"
 import { getDb } from "../_db"
+import { COLLECTIONS, DEFAULT_CATEGORIES } from "../../../types/accounting"
+import { successResponse, errorResponse, handleApiError } from "../../../utils/db"
 
 export async function POST() {
-  const db = await getDb()
-  // 插入用户
-  await db.collection("users").deleteMany({})
-  await db.collection("users").insertMany([
-    { name: "admin", password: "12345", roles: ["admin"] },
-    { name: "user", password: "12345", roles: ["user"] },
-  ])
-  // 插入组织
-  await db.collection("orgs").deleteMany({})
-  await db.collection("orgs").insertMany([
-    { type: "技术部", name: "技术部", id: 2 },
-    { type: "产品部", name: "产品部", id: 3 },
-    { type: "运营部", name: "运营部", id: 4 },
-  ])
-  return NextResponse.json({ code: 200, msg: "初始化数据成功" })
+  try {
+    const db = await getDb()
+
+    console.log('开始清空记账本数据库...')
+
+    // 清空所有记账相关的集合
+    await db.collection(COLLECTIONS.TRANSACTIONS).deleteMany({})
+    console.log('已清空交易记录')
+
+    await db.collection(COLLECTIONS.CATEGORIES).deleteMany({})
+    console.log('已清空分类数据')
+
+    await db.collection(COLLECTIONS.USERS).deleteMany({})
+    console.log('已清空用户数据')
+
+    await db.collection(COLLECTIONS.SYNC_LOGS).deleteMany({})
+    console.log('已清空同步日志')
+
+    // 重新初始化默认分类
+    const categoriesWithTimestamp = DEFAULT_CATEGORIES.map(cat => ({
+      ...cat,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }))
+
+    await db.collection(COLLECTIONS.CATEGORIES).insertMany(categoriesWithTimestamp)
+    console.log('已重新初始化默认分类')
+
+    return NextResponse.json(
+      successResponse('记账本数据库清空并初始化成功', {
+        clearedCollections: [
+          COLLECTIONS.TRANSACTIONS,
+          COLLECTIONS.CATEGORIES,
+          COLLECTIONS.USERS,
+          COLLECTIONS.SYNC_LOGS
+        ],
+        initializedCategories: DEFAULT_CATEGORIES.length
+      })
+    )
+  } catch (error) {
+    console.error('清空数据库失败:', error)
+    return NextResponse.json(
+      handleApiError(error),
+      { status: 500 }
+    )
+  }
 }

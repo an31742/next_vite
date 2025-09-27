@@ -236,6 +236,36 @@ export interface IncrementalSyncResponse {
   syncTime: string;
 }
 
+// 按日期操作相关类型
+export interface DailyTransactionsResponse {
+  date: string;
+  transactions: TransactionWithCategory[];
+  summary: {
+    totalIncome: number;
+    totalExpense: number;
+    balance: number;
+    count: number;
+  };
+}
+
+export interface BatchUpdateRequest {
+  transactions: (UpdateTransactionRequest & { id?: string })[];
+  updateType?: 'modify' | 'replace' | 'addToDate';
+}
+
+export interface BatchUpdateResult {
+  action: 'created' | 'updated' | 'skipped' | 'failed';
+  id: string;
+  reason?: string;
+}
+
+export interface BatchUpdateResponse {
+  updateType: string;
+  results: BatchUpdateResult[];
+  updatedCount: number;
+  date: string;
+}
+
 // JWT 载荷类型
 export interface JWTPayload {
   userId: string;

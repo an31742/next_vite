@@ -70,10 +70,37 @@ async function initializeDefaultCategories() {
       }));
 
       await categoriesCollection.insertMany(categoriesWithTimestamp);
-      console.log('Default categories initialized');
+      console.log(`Default categories initialized: ${categoriesWithTimestamp.length} categories`);
+    } else {
+      console.log(`Categories already exist: ${existingCategories} categories`);
     }
   } catch (error) {
     console.error('Failed to initialize default categories:', error);
+  }
+}
+
+// 强制重新初始化默认分类（清空现有分类并重新添加）
+export async function forceInitializeDefaultCategories() {
+  try {
+    const categoriesCollection = await getCollection<Category>(COLLECTIONS.CATEGORIES);
+
+    // 清空现有分类
+    await categoriesCollection.deleteMany({});
+
+    // 重新添加默认分类
+    const categoriesWithTimestamp = DEFAULT_CATEGORIES.map(cat => ({
+      ...cat,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }));
+
+    await categoriesCollection.insertMany(categoriesWithTimestamp);
+    console.log(`Force reinitialized ${categoriesWithTimestamp.length} default categories`);
+
+    return categoriesWithTimestamp;
+  } catch (error) {
+    console.error('Failed to force initialize default categories:', error);
+    throw error;
   }
 }
 
