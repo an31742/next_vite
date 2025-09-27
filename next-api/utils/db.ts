@@ -22,18 +22,32 @@ let cachedDb: Db | null = null;
 // 获取数据库连接
 export async function getDb(): Promise<Db> {
   if (cachedDb) return cachedDb;
-  if (!uri) throw new Error('Missing MONGODB_URI');
-  if (!dbName) throw new Error('Missing DB_NAME');
 
-  const client = new MongoClient(uri);
-  await client.connect();
-  cachedClient = client;
-  cachedDb = client.db(dbName);
+  if (!uri) {
+    console.error('Missing MONGODB_URI environment variable');
+    throw new Error('Database configuration error: Missing MONGODB_URI');
+  }
+  if (!dbName) {
+    console.error('Missing DB_NAME environment variable');
+    throw new Error('Database configuration error: Missing DB_NAME');
+  }
 
-  // 初始化默认分类
-  await initializeDefaultCategories();
+  try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    cachedClient = client;
+    cachedDb = client.db(dbName);
 
-  return cachedDb;
+    console.log(`Connected to MongoDB database: ${dbName}`);
+
+    // 初始化默认分类
+    await initializeDefaultCategories();
+
+    return cachedDb;
+  } catch (error) {
+    console.error('Failed to connect to MongoDB:', error);
+    throw new Error(`Database connection failed: ${error.message}`);
+  }
 }
 
 // 获取集合
