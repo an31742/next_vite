@@ -56,7 +56,13 @@ export async function POST(request: NextRequest) {
       existingUser = await usersCollection.findOne({ _id: insertResult.insertedId });
       isNewUser = true;
 
-      console.log(`新用户注册: ${user.userId} (${user.openid})`);
+      // 根据项目规范，新用户登录时支出和收入必须初始化为0
+      // 确保新用户没有任何交易记录，从零开始独立记账
+      await transactionsCollection.deleteMany({
+        userId: user.userId
+      });
+
+      console.log(`新用户注册: ${user.userId} (${user.openid}) - 收支已初始化为0`);
     } else {
       // 现有用户，检查是否需要重置
       const body = await request.json().catch(() => ({}));

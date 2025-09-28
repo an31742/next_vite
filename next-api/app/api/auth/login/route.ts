@@ -71,6 +71,14 @@ export async function POST(request: NextRequest) {
       isNewUser = true;
 
       console.log(`新用户注册: ${user!.id} (初始余额为0)`);
+
+      // 根据项目规范，新用户登录时支出和收入必须初始化为0
+      // 确保新用户没有任何交易记录，从零开始独立记账
+      await transactionsCollection.deleteMany({
+        userId: user!.id
+      });
+
+      console.log(`用户 ${user!.id} 的收支已初始化为0，确保从零开始记账`);
     } else {
       // 更新最后登录时间
       await usersCollection.updateOne(
