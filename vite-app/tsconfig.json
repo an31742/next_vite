@@ -12,7 +12,6 @@
     "types": ["vite/client", "node","three"],
     "skipLibCheck": true,
     /* Bundler mode */
-    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,

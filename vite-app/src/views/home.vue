@@ -81,7 +81,7 @@ export default defineComponent({
 
     const toAccounting = () => {
       router.push({
-        path: "/accounting-home",
+        path: "/accounting/home",
       });
     };
 

@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server"
 import jwt from "jsonwebtoken"
-import { getCurrentDateTime } from "../../../utils/auth"
+import { getCollection } from "../../../utils/db"
+import { User, COLLECTIONS } from "../../../types/accounting"
+
 export const dynamic = "force-dynamic" // 强制动态路由
 export const runtime = "nodejs" // 指定 Node.js 运行时
 
-// 定义当前时间和用户
-const CURRENT_TIME = getCurrentDateTime()
-const CURRENT_USER = "admin"
-const JWT_SECRET = "admin_secret"
+const JWT_SECRET = process.env.JWT_SECRET || "accounting_app_secret_2024"
 
 export async function POST(request: Request) {
   // 设置响应头
@@ -22,18 +21,23 @@ export async function POST(request: Request) {
   try {
     // 解析请求体
     const body = await request.json()
-    console.log("Received request body:", body)
+    console.log("Received login request:", body)
 
     const { name, password } = body
 
-    // 验证用户名和密码
-    if (name === CURRENT_USER && password === "12345") {
+    // 验证管理员用户名和密码
+    if (name === "admin" && password === "12345") {
+      // 获取用户集合以统计小程序用户
+      const usersCollection = await getCollection<User>(COLLECTIONS.USERS)
+      const totalUsers = await usersCollection.countDocuments()
+
       const token = jwt.sign(
         {
-          userId: 1,
+          userId: "admin_1",
           name,
-          loginTime: CURRENT_TIME,
-          role: ["admin", "user", "super-management"],
+          role: ["admin", "super-management"],
+          isAdmin: true,
+          totalUsers
         },
         JWT_SECRET,
         { expiresIn: "24h" }
@@ -47,10 +51,55 @@ export async function POST(request: Request) {
           data: {
             token,
             user: {
-              userId: 1,
+              userId: "admin_1",
               name,
-              role: ["admin", "user", "super-management"],
-              loginTime: CURRENT_TIME,
+              role: ["admin", "super-management"],
+              isAdmin: true,
+              totalUsers
+            },
+          },
+        }),
+        {
+          status: 200,
+          headers,
+        }
+      )
+    }
+
+    // 验证普通用户登录
+    const usersCollection = await getCollection<User>(COLLECTIONS.USERS)
+    const user = await usersCollection.findOne({
+      $or: [
+        { nickname: name },
+        { openid: name }
+      ]
+    })
+
+    if (user && password === "12345") {  // 简单密码验证
+      const token = jwt.sign(
+        {
+          userId: user.id,
+          openid: user.openid,
+          name: user.nickname || name,
+          role: ["user"],
+          isAdmin: false
+        },
+        JWT_SECRET,
+        { expiresIn: "24h" }
+      )
+
+      // 返回成功响应
+      return new NextResponse(
+        JSON.stringify({
+          code: 200,
+          message: "登录成功",
+          data: {
+            token,
+            user: {
+              userId: user.id,
+              name: user.nickname || name,
+              role: ["user"],
+              isAdmin: false
             },
           },
         }),

@@ -219,6 +219,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { User, Document, TrendCharts, Minus, Refresh } from '@element-plus/icons-vue'
+import http from '@/service/http'
 
 // 简化的类型定义
 interface UserStat {
@@ -243,26 +244,21 @@ interface SystemStats {
   totalExpense: number
 }
 
-// 模拟API函数
+// API 函数
 const getUsersStats = async () => {
-  return {
-    code: 200,
-    data: {
-      userStats: []
-    }
-  }
+  return await http.get('/admin/users-stats')
 }
 
 const resetUserTransactionsApi = async (userId: string) => {
-  return { code: 200 }
+  return await http.post('/admin/system-manage', { action: 'reset_user_transactions', userId, resetType: 'amount_only' })
 }
 
 const batchInitializeUsers = async (data: any) => {
-  return { code: 200 }
+  return await http.post('/admin/batch-initialize', data)
 }
 
 const clearDatabaseApi = async () => {
-  return { code: 200 }
+  return await http.post('/clear-data')
 }
 
 // 响应式数据
@@ -303,13 +299,27 @@ const loadUsers = async () => {
   try {
     const response = await getUsersStats()
     if (response.code === 200) {
-      users.value = response.data?.userStats || []
+      // 格式化从后端获取的数据
+      users.value = response.data?.userStats?.map((item: any) => ({
+        user: {
+          id: item.user.id,
+          nickname: item.user.nickname,
+          avatar: item.user.avatar,
+          createdAt: item.user.createdAt
+        },
+        summary: {
+          income: item.summary.income || 0,
+          expense: item.summary.expense || 0,
+          balance: item.summary.balance || 0,
+          count: item.summary.count || 0
+        }
+      })) || []
 
       // 计算系统统计
       systemStats.userCount = users.value.length
-      systemStats.transactionCount = users.value.reduce((sum, user) => sum + user.summary.count, 0)
-      systemStats.totalIncome = users.value.reduce((sum, user) => sum + user.summary.income, 0)
-      systemStats.totalExpense = users.value.reduce((sum, user) => sum + user.summary.expense, 0)
+      systemStats.transactionCount = users.value.reduce((sum: number, user: UserStat) => sum + user.summary.count, 0)
+      systemStats.totalIncome = users.value.reduce((sum: number, user: UserStat) => sum + user.summary.income, 0)
+      systemStats.totalExpense = users.value.reduce((sum: number, user: UserStat) => sum + user.summary.expense, 0)
     }
   } catch (error) {
     console.error('加载用户数据失败:', error)

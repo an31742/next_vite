@@ -7,7 +7,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers"
 import vueJsx from "@vitejs/plugin-vue-jsx"
 import wasm from 'vite-plugin-wasm';
 import glsl from 'vite-plugin-glsl'
-const API_PROXY_TARGET = process.env.VITE_API_PROXY || "http://localhost:9527"
+const API_PROXY_TARGET = process.env.VITE_API_PROXY || "http://localhost:3000"
 
 export default defineConfig({
   base: "/",

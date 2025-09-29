@@ -51,7 +51,15 @@ const submitForm = async () => {
       store.userInfo = decoded
       window.localStorage.setItem("userInfo", JSON.stringify(decoded))
       store.getAuthButtonList() //在登录的时候获取按钮级别权限
-      router.push({ path: "/" })
+
+      // 根据用户角色跳转到不同页面
+      if ((decoded as any).isAdmin) {
+        // 管理员跳转到用户管理页面
+        router.push({ path: "/accounting/admin" })
+      } else {
+        // 普通用户跳转到首页
+        router.push({ path: "/" })
+      }
     } else {
       // 登录失败处理
       alert(res?.msg || "登录失败")
