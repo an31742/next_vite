@@ -166,6 +166,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { getCategories as getCategoriesApi, createCategory as createCategoryApi, updateCategory as updateCategoryApi, deleteCategory as deleteCategoryApiService } from '@/service/accounting'
 import { Plus, Rank } from '@element-plus/icons-vue'
 import draggable from 'vuedraggable'
 
@@ -180,32 +181,32 @@ interface Category {
   isSystem: boolean
 }
 
-// 模拟API函数
-const getCategories = async () => {
-  return {
-    code: 200,
-    data: {
-      income: [],
-      expense: []
-    }
-  }
-}
+// // 模拟API函数
+// const getCategories = async () => {
+//   return {
+//     code: 200,
+//     data: {
+//       income: [],
+//       expense: []
+//     }
+//   }
+// }
 
-const createCategory = async (data: any) => {
-  return { code: 200, data: { id: Date.now().toString(), ...data } }
-}
+// const createCategory = async (data: any) => {
+//   return { code: 200, data: { id: Date.now().toString(), ...data } }
+// }
 
-const updateCategory = async (_id: string, _data: any) => {
-  return { code: 200 }
-}
+// const updateCategory = async (_id: string, _data: any) => {
+//   return { code: 200 }
+// }
 
-const deleteCategoryApi = async (_id: string) => {
-  return { code: 200 }
-}
+// const deleteCategoryApi = async (_id: string) => {
+//   return { code: 200 }
+// }
 
-const updateCategorySort = async (_categories: any[]) => {
-  return { code: 200 }
-}
+// const updateCategorySort = async (_categories: any[]) => {
+//   return { code: 200 }
+// }
 
 // 响应式数据
 const showAddDialog = ref(false)
@@ -237,7 +238,7 @@ const categoryRules = {
 // 方法
 const loadCategories = async () => {
   try {
-    const response = await getCategories()
+    const response = await getCategoriesApi()
     if (response.code === 200) {
       incomeCategories.value = response.data?.income || []
       expenseCategories.value = response.data?.expense || []
@@ -265,7 +266,7 @@ const deleteCategory = async (category: Category) => {
       type: 'warning'
     })
 
-    const response = await deleteCategoryApi(category.id)
+    const response = await deleteCategoryApiService(category.id)
     if (response.code === 200) {
       ElMessage.success('删除成功')
       loadCategories()
@@ -286,16 +287,17 @@ const saveCategory = async () => {
 
     const formData = {
       ...categoryForm,
-      sort: 99 // 新分类默认排序
+      sort: 99, // 新分类默认排序
+      isSystem: false // 自定义分类
     }
 
     let response
     if (currentCategory.value) {
       // 编辑分类
-      response = await updateCategory(currentCategory.value.id, formData)
+      response = await updateCategoryApi(currentCategory.value.id, formData)
     } else {
       // 新增分类
-      response = await createCategory(formData)
+      response = await createCategoryApi(formData)
     }
 
     if (response.code === 200) {
@@ -328,10 +330,12 @@ const handleDragEnd = async (type: 'income' | 'expense') => {
       sort: index + 1
     }))
 
-    const response = await updateCategorySort(sortedCategories)
-    if (response.code === 200) {
-      ElMessage.success('排序已更新')
-    }
+    // 由于后端没有提供更新分类排序的API，我们暂时禁用此功能
+    ElMessage.info('分类排序功能暂未实现')
+    // const response = await updateCategorySort(sortedCategories)
+    // if (response.code === 200) {
+    //   ElMessage.success('排序已更新')
+    // }
   } catch (error) {
     console.error('更新排序失败:', error)
     ElMessage.error('更新排序失败')

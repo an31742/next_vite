@@ -70,6 +70,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch, defineEmits, defineProps } from 'vue'
 import { ElMessage } from 'element-plus'
+import { createTransaction, updateTransaction } from '@/service/accounting'
 
 // 简化的类型定义
 interface Transaction {
@@ -175,15 +176,47 @@ const handleSubmit = async () => {
 
     loading.value = true
 
-    // 这里应该调用实际的API
-    // 如果 props.transaction 存在则是编辑，否则是新增
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    // 调用实际的API
+    if (props.transaction) {
+      // 编辑交易记录
+      const updateData = {
+        type: form.type,
+        amount: form.amount,
+        categoryId: form.categoryId,
+        note: form.note,
+        date: form.date
+      }
 
-    ElMessage.success(props.transaction ? '编辑成功' : '新增成功')
-    emit('success')
-    handleClose()
+      const response = await updateTransaction(props.transaction.id, updateData)
+      if (response.code === 200) {
+        ElMessage.success('编辑成功')
+        emit('success')
+        handleClose()
+      } else {
+        ElMessage.error(response.msg || '编辑失败')
+      }
+    } else {
+      // 新增交易记录
+      const createData = {
+        type: form.type,
+        amount: form.amount,
+        categoryId: form.categoryId,
+        note: form.note,
+        date: form.date
+      }
+
+      const response = await createTransaction(createData)
+      if (response.code === 200) {
+        ElMessage.success('新增成功')
+        emit('success')
+        handleClose()
+      } else {
+        ElMessage.error(response.msg || '新增失败')
+      }
+    }
   } catch (error) {
     console.error('保存失败:', error)
+    ElMessage.error('保存失败')
   } finally {
     loading.value = false
   }

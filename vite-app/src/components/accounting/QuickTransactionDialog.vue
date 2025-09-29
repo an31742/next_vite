@@ -99,6 +99,7 @@
 import { ref, reactive, computed, watch, defineEmits, defineProps } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus, Minus } from '@element-plus/icons-vue'
+import { createTransaction } from '@/service/accounting'
 
 // 简化的类型定义
 interface Category {
@@ -177,7 +178,7 @@ const handleSubmit = async () => {
 
     loading.value = true
 
-    // 这里应该调用实际的API
+    // 调用实际的API
     const transactionData = {
       type: form.type,
       amount: parseFloat(form.amount),
@@ -186,14 +187,17 @@ const handleSubmit = async () => {
       date: form.date
     }
 
-    // 模拟API调用
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    ElMessage.success(`${form.type === 'income' ? '收入' : '支出'}记录添加成功`)
-    emit('success')
-    handleClose()
+    const response = await createTransaction(transactionData)
+    if (response.code === 200) {
+      ElMessage.success(`${form.type === 'income' ? '收入' : '支出'}记录添加成功`)
+      emit('success')
+      handleClose()
+    } else {
+      ElMessage.error(response.msg || '记账失败')
+    }
   } catch (error) {
     console.error('记账失败:', error)
+    ElMessage.error('记账失败')
   } finally {
     loading.value = false
   }

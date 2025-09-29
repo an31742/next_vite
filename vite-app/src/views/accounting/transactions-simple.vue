@@ -151,50 +151,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Search } from '@element-plus/icons-vue'
-
-// 简化的类型定义
-interface Transaction {
-  id: string
-  type: 'income' | 'expense'
-  amount: number
-  categoryId: string
-  note?: string
-  date: string
-  category?: Category
-}
-
-interface Category {
-  id: string
-  name: string
-  icon?: string
-  type: 'income' | 'expense'
-}
-
-// 模拟API函数
-const getTransactions = async (_params: any) => {
-  // 这里应该调用实际的API
-  return {
-    code: 200,
-    data: {
-      list: [],
-      pagination: { total: 0 }
-    }
-  }
-}
-
-const getCategories = async () => {
-  return {
-    code: 200,
-    data: {
-      income: [],
-      expense: []
-    }
-  }
-}
-
-const deleteTransactionApi = async (_id: string) => {
-  return { code: 200 }
-}
+import { getTransactions, getCategories, deleteTransaction as deleteTransactionApi, type Transaction, type Category, type TransactionListQuery } from '@/service/accounting'
 
 // 组件引入
 const TransactionFormDialog = {
@@ -258,13 +215,15 @@ const loadCategories = async () => {
 const loadTransactions = async () => {
   loading.value = true
   try {
-    const response = await getTransactions({
+    const params: TransactionListQuery = {
       page: pagination.page,
       pageSize: pagination.pageSize,
       type: filterForm.type as 'income' | 'expense' | undefined,
       categoryId: filterForm.categoryId,
       keyword: filterForm.keyword
-    })
+    }
+
+    const response = await getTransactions(params)
     if (response.code === 200) {
       transactions.value = response.data?.list || []
       pagination.total = response.data?.pagination?.total || 0
@@ -303,6 +262,8 @@ const deleteTransaction = async (transaction: Transaction) => {
     if (response.code === 200) {
       ElMessage.success('删除成功')
       loadTransactions()
+    } else {
+      ElMessage.error(response.msg || '删除失败')
     }
   } catch (error) {
     if (error !== 'cancel') {
@@ -324,6 +285,33 @@ onMounted(() => {
   loadCategories()
   loadTransactions()
 })
+
+// 模拟API函数
+// const getTransactions = async (params: any) => {
+//   // 这里应该调用实际的API
+//   return {
+//     code: 200,
+//     data: {
+//       list: [],
+//       pagination: { total: 0 }
+//     }
+//   }
+// }
+
+// const getCategories = async () => {
+//   return {
+//     code: 200,
+//     data: {
+//       income: [],
+//       expense: []
+//     }
+//   }
+// }
+
+// const deleteTransactionApi = async (id: string) => {
+//   return { code: 200 }
+// }
+
 </script>
 
 <style scoped lang="scss">

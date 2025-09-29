@@ -195,9 +195,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, TrendCharts, Minus } from '@element-plus/icons-vue'
+import { getDailyTransactions as getDailyTransactionsApi, getTransactions as getTransactionsApi, getCategories as getCategoriesApi, createTransaction as createTransactionApi, updateTransaction as updateTransactionApi, deleteTransaction as deleteTransactionApiService } from '@/service/accounting'
 
 // 简化的类型定义
 interface Transaction {
@@ -221,54 +222,6 @@ interface DailyStats {
   income: number
   expense: number
   count: number
-}
-
-// 模拟API函数
-const getDailyTransactions = async (date: string) => {
-  return {
-    code: 200,
-    data: {
-      date,
-      transactions: [],
-      summary: {
-        totalIncome: 0,
-        totalExpense: 0,
-        balance: 0,
-        count: 0
-      }
-    }
-  }
-}
-
-const getMonthlyTransactions = async (_year: number, _month: number) => {
-  return {
-    code: 200,
-    data: {
-      transactions: []
-    }
-  }
-}
-
-const getCategories = async () => {
-  return {
-    code: 200,
-    data: {
-      income: [],
-      expense: []
-    }
-  }
-}
-
-const createTransaction = async (data: any) => {
-  return { code: 200, data: { id: Date.now().toString(), ...data } }
-}
-
-const updateTransaction = async (_id: string, _data: any) => {
-  return { code: 200 }
-}
-
-const deleteTransactionApi = async (_id: string) => {
-  return { code: 200 }
 }
 
 // 响应式数据
@@ -342,11 +295,20 @@ const loadMonthData = async () => {
     const year = date.getFullYear()
     const month = date.getMonth() + 1
 
-    const response = await getMonthlyTransactions(year, month)
+    // 构造月份的开始和结束日期
+    const startDate = `${year}-${month.toString().padStart(2, '0')}-01`
+    const endDate = `${year}-${month.toString().padStart(2, '0')}-${new Date(year, month, 0).getDate()}`
+
+    // 使用 getTransactions API 获取指定日期范围的交易记录
+    const response = await getTransactionsApi({
+      startDate,
+      endDate
+    })
+    
     if (response.code === 200) {
       // 计算每日统计
       const stats: Record<string, DailyStats> = {}
-      ;(response.data?.transactions || []).forEach((transaction: Transaction) => {
+      ;(response.data?.list || []).forEach((transaction: Transaction) => {
         if (!stats[transaction.date]) {
           stats[transaction.date] = { income: 0, expense: 0, count: 0 }
         }
@@ -374,7 +336,7 @@ const selectDate = async (date: string) => {
 
 const loadDailyTransactions = async (date: string) => {
   try {
-    const response = await getDailyTransactions(date)
+    const response = await getDailyTransactionsApi(date)
     if (response.code === 200) {
       dailyTransactions.value = response.data?.transactions || []
     }
@@ -386,7 +348,7 @@ const loadDailyTransactions = async (date: string) => {
 
 const loadCategories = async () => {
   try {
-    const response = await getCategories()
+    const response = await getCategoriesApi()
     if (response.code === 200) {
       categories.value = [...(response.data?.income || []), ...(response.data?.expense || [])]
     }
@@ -413,7 +375,7 @@ const deleteTransaction = async (transaction: Transaction) => {
       type: 'warning'
     })
 
-    const response = await deleteTransactionApi(transaction.id)
+    const response = await deleteTransactionApiService(transaction.id)
     if (response.code === 200) {
       ElMessage.success('删除成功')
       loadDailyTransactions(selectedDate.value)
@@ -436,10 +398,10 @@ const saveTransaction = async () => {
     let response
     if (currentTransaction.value) {
       // 编辑交易
-      response = await updateTransaction(currentTransaction.value.id, transactionForm)
+      response = await updateTransactionApi(currentTransaction.value.id, transactionForm)
     } else {
       // 新增交易
-      response = await createTransaction(transactionForm)
+      response = await createTransactionApi(transactionForm)
     }
 
     if (response.code === 200) {
@@ -475,162 +437,3 @@ onMounted(() => {
   loadCategories()
 })
 </script>
-
-<style scoped lang="scss">
-.calendar-page {
-  padding: 20px;
-
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 24px;
-
-    .header-left {
-      .page-title {
-        margin: 0 0 4px 0;
-        font-size: 24px;
-        font-weight: 600;
-        color: #1a1a1a;
-      }
-
-      .page-description {
-        margin: 0;
-        color: #666;
-        font-size: 14px;
-      }
-    }
-  }
-
-  .calendar-card {
-    margin-bottom: 24px;
-
-    :deep(.el-calendar) {
-      .el-calendar__body {
-        padding: 0;
-      }
-
-      .el-calendar-table {
-        .el-calendar-day {
-          min-height: 80px;
-          padding: 4px;
-        }
-      }
-    }
-  }
-
-  .calendar-day {
-    height: 100%;
-    cursor: pointer;
-
-    .day-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-
-      .day-number {
-        font-size: 16px;
-        font-weight: 500;
-      }
-
-      .today-tag {
-        font-size: 12px;
-        color: #fff;
-        background: #1890ff;
-        padding: 2px 4px;
-        border-radius: 2px;
-      }
-    }
-
-    .day-summary {
-      .summary-item {
-        display: flex;
-        align-items: center;
-        font-size: 12px;
-        margin-bottom: 2px;
-
-        &.income {
-          color: #52c41a;
-        }
-
-        &.expense {
-          color: #ff4d4f;
-        }
-
-        .el-icon {
-          margin-right: 2px;
-        }
-      }
-    }
-
-    .day-indicator {
-      .no-data {
-        color: #ccc;
-        font-size: 12px;
-      }
-    }
-  }
-
-  .date-details {
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      h3 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 600;
-      }
-    }
-
-    .category-cell {
-      display: flex;
-      align-items: center;
-
-      .category-icon {
-        margin-right: 4px;
-      }
-    }
-
-    .amount-income {
-      color: #52c41a;
-      font-weight: 600;
-    }
-
-    .amount-expense {
-      color: #ff4d4f;
-      font-weight: 600;
-    }
-
-    .date-summary {
-      display: flex;
-      justify-content: flex-end;
-      gap: 24px;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #eee;
-
-      .summary-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        .label {
-          color: #666;
-        }
-
-        .value {
-          font-weight: 600;
-        }
-      }
-    }
-
-    .no-transactions {
-      text-align: center;
-      padding: 40px 0;
-    }
-  }
-}
-</style>

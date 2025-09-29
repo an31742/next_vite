@@ -181,16 +181,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch, nextTick } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { TrendCharts, Minus, Wallet, Document } from '@element-plus/icons-vue'
-import * as echarts from 'echarts/core'
-import { LineChart, BarChart } from 'echarts/charts'
-import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
-import { CanvasRenderer } from 'echarts/renderers'
-
-// 注册必须的组件
-echarts.use([LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer])
+import * as echarts from 'echarts'
+import { getMonthlyStatistics as getMonthlyStatisticsApi } from '@/service/accounting'
 
 // 简化的类型定义
 interface StatisticsSummary {
@@ -227,29 +221,6 @@ interface MonthlyStatistics {
   dailyTrend?: DailyTrend[]
 }
 
-// 模拟API函数
-const getMonthlyStatistics = async (year: number, month: number) => {
-  // 这里应该调用实际的API
-  return {
-    code: 200,
-    data: {
-      year,
-      month,
-      summary: {
-        income: 0,
-        expense: 0,
-        balance: 0,
-        transactionCount: 0
-      },
-      categoryStats: {
-        income: [],
-        expense: []
-      },
-      dailyTrend: []
-    }
-  }
-}
-
 // 响应式数据
 const loading = ref(false)
 const chartType = ref<'line' | 'bar'>('line')
@@ -282,8 +253,8 @@ const monthlyStats = reactive<MonthlyStatistics>({
 })
 
 // 计算属性
-const incomeCategoryStats = ref<CategoryStats[]>([])
-const expenseCategoryStats = ref<CategoryStats[]>([])
+const incomeCategoryStats = computed<CategoryStats[]>(() => monthlyStats.categoryStats?.income || [])
+const expenseCategoryStats = computed<CategoryStats[]>(() => monthlyStats.categoryStats?.expense || [])
 
 // 方法
 const formatAmount = (amount: number) => {
@@ -297,13 +268,15 @@ const loadStatistics = async () => {
     const year = date.getFullYear()
     const month = date.getMonth() + 1
 
-    const response = await getMonthlyStatistics(year, month)
-    if (response.code === 200) {
-      Object.assign(monthlyStats, response.data)
-
-      // 更新分类统计
-      incomeCategoryStats.value = response.data.categoryStats?.income || []
-      expenseCategoryStats.value = response.data.categoryStats?.expense || []
+    const response = await getMonthlyStatisticsApi(year, month)
+    if (response.code === 200 && response.data) {
+      Object.assign(monthlyStats, {
+        year: response.data.year,
+        month: response.data.month,
+        summary: response.data.summary,
+        categoryStats: response.data.categoryStats,
+        dailyTrend: response.data.dailyTrend
+      })
 
       // 渲染图表
       await nextTick()
@@ -594,4 +567,3 @@ onMounted(() => {
     }
   }
 }
-</style>
