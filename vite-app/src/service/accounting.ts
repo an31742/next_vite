@@ -137,92 +137,92 @@ export interface DailyTransactionsResponse {
 
 // 交易记录相关API
 export const getTransactions = (params: TransactionListQuery): Promise<ApiResponse<TransactionListResponse>> => {
-  return http.get('/api/transactions', { params })
+  return http.get('/transactions', { params })
 }
 
 export const getAdminUserTransactions = (userId: string, params: TransactionListQuery): Promise<ApiResponse<TransactionListResponse>> => {
-  return http.get('/api/admin/user-transactions', { params: { userId, ...params } })
+  return http.get('/admin/user-transactions', { params: { userId, ...params } })
 }
 
 export const getTransaction = (id: string): Promise<ApiResponse<Transaction>> => {
-  return http.get(`/api/transactions/${id}`)
+  return http.get(`/transactions/${id}`)
 }
 
 export const createTransaction = (data: CreateTransactionRequest): Promise<ApiResponse<Transaction>> => {
-  return http.post('/api/transactions', data)
+  return http.post('/transactions', data)
 }
 
 export const updateTransaction = (id: string, data: UpdateTransactionRequest): Promise<ApiResponse<Transaction>> => {
-  return http.post(`/api/transactions/${id}`, { ...data, _method: 'PUT' })
+  return http.post(`/transactions/${id}`, { ...data, _method: 'PUT' })
 }
 
 export const deleteTransaction = (id: string): Promise<ApiResponse<void>> => {
-  return http.post(`/api/transactions/${id}`, { _method: 'DELETE' })
+  return http.post(`/transactions/${id}`, { _method: 'DELETE' })
 }
 
 // 分类相关API
 export const getCategories = (): Promise<ApiResponse<CategoriesResponse>> => {
-  return http.get('/api/categories')
+  return http.get('/categories')
 }
 
 export const createCategory = (data: Omit<Category, 'id' | 'createdAt' | 'updatedAt'>): Promise<ApiResponse<Category>> => {
-  return http.post('/api/categories', data)
+  return http.post('/categories', data)
 }
 
 export const updateCategory = (id: string, data: Partial<Category>): Promise<ApiResponse<Category>> => {
-  return http.post(`/api/categories/${id}`, { ...data, _method: 'PUT' })
+  return http.post(`/categories/${id}`, { ...data, _method: 'PUT' })
 }
 
 export const deleteCategory = (id: string): Promise<ApiResponse<void>> => {
-  return http.post(`/api/categories/${id}`, { _method: 'DELETE' })
+  return http.post(`/categories/${id}`, { _method: 'DELETE' })
 }
 
 // 统计相关API
 export const getMonthlyStatistics = (year: number, month: number): Promise<ApiResponse<MonthlyStatisticsResponse>> => {
-  return http.get('/api/statistics/monthly', {
+  return http.get('/statistics/monthly', {
     params: { year, month }
   })
 }
 
 export const getYearlyStatistics = (year: number): Promise<ApiResponse<any>> => {
-  return http.get('/api/statistics/yearly', {
+  return http.get('/statistics/yearly', {
     params: { year }
   })
 }
 
 export const getRangeStatistics = (startDate: string, endDate: string, groupBy: 'day' | 'month' = 'day'): Promise<ApiResponse<any>> => {
-  return http.get('/api/statistics/range', {
+  return http.get('/statistics/range', {
     params: { startDate, endDate, groupBy }
   })
 }
 
 // 日期相关API
 export const getDailyTransactions = (date: string): Promise<ApiResponse<DailyTransactionsResponse>> => {
-  return http.get(`/api/transactions/date/${date}`)
+  return http.get(`/transactions/date/${date}`)
 }
 
 export const getRecentTransactions = (params: { page: number, pageSize: number }): Promise<ApiResponse<TransactionListResponse>> => {
-  return http.get('/api/transactions', { params })
+  return http.get('/transactions', { params })
 }
 
 // 用户相关API
 export const getUserStatistics = (): Promise<ApiResponse<StatisticsSummary>> => {
-  return http.get('/api/user/statistics')
+  return http.get('/user/statistics')
 }
 
 export const resetUserTransactionsAdmin = (userId: string): Promise<ApiResponse<void>> => {
-  return http.post('/api/admin/system-manage/reset-user', { userId, resetType: 'amount_only' })
+  return http.post('/admin/system-manage/reset-user', { userId, resetType: 'amount_only' })
 }
 
 // 管理员API
 export const getUsersStats = (): Promise<ApiResponse<any>> => {
-  return http.get('/api/admin/users-stats')
+  return http.get('/admin/users-stats')
 }
 
 export const batchInitializeUsers = (data: any): Promise<ApiResponse<any>> => {
-  return http.post('/api/admin/batch-initialize', data)
+  return http.post('/admin/batch-initialize', data)
 }
 
 export const clearDatabase = (): Promise<ApiResponse<any>> => {
-  return http.post('/api/admin/system-manage/clear-database', { action: 'clear_database' })
+  return http.post('/admin/system-manage/clear-database', { action: 'clear_database' })
 }
