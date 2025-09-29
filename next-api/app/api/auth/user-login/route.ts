@@ -153,7 +153,8 @@ export async function POST(request: NextRequest) {
     // 生成JWT token
     const tokenPayload = {
       userId: user!.id,
-      openid: user!.openid
+      openid: user!.openid,
+      isAdmin: false // 普通用户默认不是管理员
     };
 
     const accessToken = generateToken(tokenPayload);

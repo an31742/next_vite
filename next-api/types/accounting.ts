@@ -290,6 +290,7 @@ export interface BatchUpdateResponse {
 export interface JWTPayload {
   userId: string;
   openid: string;
+  isAdmin?: boolean; // 添加管理员权限标识
   iat: number;
   exp: number;
 }
