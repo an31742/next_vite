@@ -240,7 +240,7 @@ const getDailyTransactions = async (date: string) => {
   }
 }
 
-const getMonthlyTransactions = async (year: number, month: number) => {
+const getMonthlyTransactions = async (_year: number, _month: number) => {
   return {
     code: 200,
     data: {
@@ -263,11 +263,11 @@ const createTransaction = async (data: any) => {
   return { code: 200, data: { id: Date.now().toString(), ...data } }
 }
 
-const updateTransaction = async (id: string, data: any) => {
+const updateTransaction = async (_id: string, _data: any) => {
   return { code: 200 }
 }
 
-const deleteTransactionApi = async (id: string) => {
+const deleteTransactionApi = async (_id: string) => {
   return { code: 200 }
 }
 

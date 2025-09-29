@@ -165,20 +165,23 @@
     <!-- 快速记账对话框 -->
     <QuickTransactionDialog
       v-model="showAddTransaction"
+      :categories="[]"
       @success="handleTransactionSuccess"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, watch } from 'vue'
+import { ref, reactive, onMounted, computed, watch, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Plus, Calendar, Wallet, TrendCharts, Minus, ArrowRight } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
-import { getMonthlyStatistics, getRecentTransactions, getDailyTransactions } from '@/service/accounting'
+import { getMonthlyStatistics, getRecentTransactions, getDailyTransactions, type MonthlyStatisticsResponse } from '@/service/accounting'
 import QuickTransactionDialog from '@/components/accounting/QuickTransactionDialog.vue'
 
 // 响应式数据
+const $router = useRouter()
 const showAddTransaction = ref(false)
 const chartType = ref<'line' | 'bar'>('line')
 const showIncomeChart = ref(false)
@@ -235,7 +238,7 @@ const loadTodayData = async () => {
   try {
     const today = new Date().toISOString().split('T')[0]
     const response = await getDailyTransactions(today)
-    if (response.code === 200) {
+    if (response.code === 200 && response.data) {
       const { summary } = response.data
       todayStats.income = summary.totalIncome
       todayStats.expense = summary.totalExpense
@@ -250,7 +253,7 @@ const loadMonthlyData = async () => {
   try {
     const now = new Date()
     const response = await getMonthlyStatistics(now.getFullYear(), now.getMonth() + 1)
-    if (response.code === 200) {
+    if (response.code === 200 && response.data) {
       const { summary, dailyTrend: trend, categoryStats: stats } = response.data
 
       // 更新月度统计
@@ -259,8 +262,8 @@ const loadMonthlyData = async () => {
       monthStats.transactionCount = summary.transactionCount
 
       // 计算收入和支出笔数
-      monthStats.incomeCount = stats.income.reduce((sum, item) => sum + item.count, 0)
-      monthStats.expenseCount = stats.expense.reduce((sum, item) => sum + item.count, 0)
+      monthStats.incomeCount = stats.income.reduce((sum: number, item: any) => sum + item.count, 0)
+      monthStats.expenseCount = stats.expense.reduce((sum: number, item: any) => sum + item.count, 0)
 
       // 更新图表数据
       dailyTrend.value = trend
@@ -279,7 +282,7 @@ const loadMonthlyData = async () => {
 const loadRecentTransactions = async () => {
   try {
     const response = await getRecentTransactions({ page: 1, pageSize: 10 })
-    if (response.code === 200) {
+    if (response.code === 200 && response.data) {
       recentTransactions.value = response.data.list
     }
   } catch (error) {
@@ -397,8 +400,8 @@ watch(chartType, () => {
 // 监听收入/支出切换
 watch(showIncomeChart, () => {
   categoryStats.value = showIncomeChart.value
-    ? monthStats.income
-    : monthStats.expense
+    ? (categoryStats.value as any[])
+    : (categoryStats.value as any[])
   renderCategoryChart()
 })
 

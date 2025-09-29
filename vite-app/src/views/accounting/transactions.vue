@@ -353,7 +353,11 @@ const loadTransactions = async () => {
     const params: TransactionListQuery = {
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...filterForm
+      type: filterForm.type as 'income' | 'expense' | undefined,
+      categoryId: filterForm.categoryId,
+      keyword: filterForm.keyword,
+      startDate: filterForm.startDate,
+      endDate: filterForm.endDate
     }
 
     // 添加排序参数

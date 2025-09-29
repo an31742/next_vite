@@ -298,9 +298,11 @@ const loadUsers = async () => {
   loading.value = true
   try {
     const response = await getUsersStats()
-    if (response.code === 200) {
+    if (response.code === 200 && response.data) {
       // 格式化从后端获取的数据
-      users.value = response.data?.userStats?.map((item: any) => ({
+      // 修复类型问题，先检查 userStats 是否存在
+      const userStatsData = (response.data as any).userStats || [];
+      users.value = userStatsData.map((item: any) => ({
         user: {
           id: item.user.id,
           nickname: item.user.nickname,
@@ -409,7 +411,7 @@ const clearDatabase = async () => {
   }
 }
 
-const deleteUser = async (userId: string) => {
+const deleteUser = async (_userId: string) => {
   try {
     await ElMessageBox.confirm('确定要删除该用户吗？此操作不可恢复。', '确认删除', {
       type: 'error'

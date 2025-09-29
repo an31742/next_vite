@@ -195,15 +195,15 @@ const createCategory = async (data: any) => {
   return { code: 200, data: { id: Date.now().toString(), ...data } }
 }
 
-const updateCategory = async (id: string, data: any) => {
+const updateCategory = async (_id: string, _data: any) => {
   return { code: 200 }
 }
 
-const deleteCategoryApi = async (id: string) => {
+const deleteCategoryApi = async (_id: string) => {
   return { code: 200 }
 }
 
-const updateCategorySort = async (categories: any[]) => {
+const updateCategorySort = async (_categories: any[]) => {
   return { code: 200 }
 }
 

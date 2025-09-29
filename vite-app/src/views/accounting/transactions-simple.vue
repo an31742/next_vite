@@ -171,7 +171,7 @@ interface Category {
 }
 
 // 模拟API函数
-const getTransactions = async (params: any) => {
+const getTransactions = async (_params: any) => {
   // 这里应该调用实际的API
   return {
     code: 200,
@@ -192,7 +192,7 @@ const getCategories = async () => {
   }
 }
 
-const deleteTransactionApi = async (id: string) => {
+const deleteTransactionApi = async (_id: string) => {
   return { code: 200 }
 }
 
@@ -258,13 +258,13 @@ const loadCategories = async () => {
 const loadTransactions = async () => {
   loading.value = true
   try {
-    const params = {
+    const response = await getTransactions({
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...filterForm
-    }
-
-    const response = await getTransactions(params)
+      type: filterForm.type as 'income' | 'expense' | undefined,
+      categoryId: filterForm.categoryId,
+      keyword: filterForm.keyword
+    })
     if (response.code === 200) {
       transactions.value = response.data?.list || []
       pagination.total = response.data?.pagination?.total || 0
