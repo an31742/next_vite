@@ -20,6 +20,12 @@
 <script  lang="ts">
 
 import { defineComponent, reactive, ref, nextTick } from "vue";
+// 注意：此组件目前使用LocalStorage存储数据，如果要使用真实API，可以参考以下方式：
+// 1. 导入API服务：import { createComment, getComments, deleteComment } from '@/service/comments'
+// 2. 将localStorage操作替换为API调用
+// 3. 在组件加载时调用getComments获取数据
+// 4. 在添加评论时调用createComment创建数据
+// 5. 在删除评论时调用deleteComment删除数据
 export default defineComponent({
   setup() {
     let content = ref([
