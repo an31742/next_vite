@@ -41,6 +41,19 @@
           <span>系统管理</span>
         </el-menu-item>
       </el-menu>
+
+      <!-- 返回首页按钮 -->
+      <div class="sidebar-footer">
+        <el-button 
+          type="primary" 
+          link 
+          @click="goToHome"
+          class="home-button"
+        >
+          <el-icon><Back /></el-icon>
+          <span>返回首页</span>
+        </el-button>
+      </div>
     </el-aside>
 
     <!-- 主内容区域 -->
@@ -53,7 +66,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { House, Document, PieChart, Calendar, Collection, Setting } from '@element-plus/icons-vue'
+import { House, Document, PieChart, Calendar, Collection, Setting, Back } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -71,6 +84,11 @@ watch(
 const handleMenuSelect = (index: string) => {
   router.push(index)
 }
+
+// 返回首页
+const goToHome = () => {
+  router.push('/')
+}
 </script>
 
 <style scoped lang="scss">
@@ -83,6 +101,8 @@ const handleMenuSelect = (index: string) => {
     background: #ffffff;
     border-right: 1px solid #ebeef5;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 
     .logo {
       height: 60px;
@@ -101,6 +121,7 @@ const handleMenuSelect = (index: string) => {
 
     .sidebar-menu {
       border: none;
+      flex: 1;
 
       :deep(.el-menu-item) {
         height: 50px;
@@ -120,6 +141,28 @@ const handleMenuSelect = (index: string) => {
           width: 24px;
           text-align: center;
           font-size: 18px;
+        }
+      }
+    }
+
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid #ebeef5;
+
+      .home-button {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0;
+
+        .el-icon {
+          margin-right: 8px;
+          width: 24px;
+          text-align: center;
+          font-size: 18px;
+        }
+
+        span {
+          font-size: 14px;
         }
       }
     }

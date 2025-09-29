@@ -8,17 +8,23 @@
       </template>
 
       <div class="entry-content">
-        <p class="description">
-          欢迎使用记账本管理系统！在这里您可以管理个人或家庭的收支记录，
-          查看统计分析，设置分类标签等。
-        </p>
+        <div class="welcome-banner">
+          <div class="icon-wrapper">
+            <el-icon size="48" color="#409eff" class="bounce-animation"><Wallet /></el-icon>
+          </div>
+          <h1 class="fade-in">欢迎使用记账本</h1>
+          <p class="description fade-in-delay">
+            轻松管理您的个人或家庭财务，记录每一笔收支，掌握资金流向
+          </p>
+        </div>
 
         <div class="features-grid">
           <div
-            v-for="feature in features"
+            v-for="(feature, index) in features"
             :key="feature.path"
             class="feature-item"
             @click="goTo(feature.path)"
+            :class="`fade-in-up fade-in-delay-${index + 1}`"
           >
             <div class="feature-icon" :style="{ backgroundColor: feature.color }">
               <el-icon size="24" color="white">
@@ -32,12 +38,12 @@
           </div>
         </div>
 
-        <div class="quick-actions">
-          <el-button type="primary" @click="goTo('/accounting/dashboard')">
+        <div class="quick-actions fade-in-up fade-in-delay-7">
+          <el-button type="primary" @click="goTo('/accounting/dashboard')" size="large">
             <el-icon><House /></el-icon>
             进入记账本
           </el-button>
-          <el-button @click="goTo('/accounting/transactions')">
+          <el-button @click="goTo('/accounting/transactions')" size="large">
             <el-icon><Plus /></el-icon>
             快速记账
           </el-button>
@@ -56,7 +62,8 @@ import {
   Calendar,
   Collection,
   Setting,
-  Plus
+  Plus,
+  Wallet
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -115,15 +122,22 @@ const goTo = (path: string) => {
 .accounting-entry {
   padding: 20px;
   height: 100%;
-  background: #f5f5f5;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .entry-card {
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     height: calc(100vh - 40px);
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 
     .card-header {
       text-align: center;
+      padding: 20px 0;
 
       h2 {
         margin: 0;
@@ -134,12 +148,33 @@ const goTo = (path: string) => {
     }
 
     .entry-content {
-      .description {
+      .welcome-banner {
         text-align: center;
-        font-size: 16px;
-        color: #666;
+        padding: 30px 0;
+        background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+        border-radius: 8px;
         margin-bottom: 40px;
-        line-height: 1.6;
+
+        .icon-wrapper {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 20px;
+        }
+
+        h1 {
+          margin: 20px 0 10px;
+          color: #1a1a1a;
+          font-size: 32px;
+          font-weight: 600;
+        }
+
+        .description {
+          text-align: center;
+          font-size: 18px;
+          color: #666;
+          margin: 0;
+          line-height: 1.6;
+        }
       }
 
       .features-grid {
@@ -157,10 +192,12 @@ const goTo = (path: string) => {
           box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
           cursor: pointer;
           transition: all 0.3s;
+          border: 1px solid #ebeef5;
 
           &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.15);
+            border-color: #409eff;
           }
 
           .feature-icon {
@@ -194,18 +231,90 @@ const goTo = (path: string) => {
 
       .quick-actions {
         text-align: center;
+        padding: 20px 0;
 
         .el-button {
-          margin: 0 10px;
-          padding: 12px 24px;
+          margin: 0 15px;
+          padding: 16px 32px;
           font-size: 16px;
+          border-radius: 8px;
 
           .el-icon {
             margin-right: 8px;
           }
+
+          &:first-child {
+            box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+          }
         }
       }
     }
+  }
+}
+
+// 动画效果
+.bounce-animation {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+// 淡入动画
+.fade-in {
+  animation: fadeIn 1s ease-in;
+}
+
+.fade-in-delay {
+  animation: fadeIn 1s ease-in 0.3s both;
+}
+
+.fade-in-delay-1 { animation: fadeIn 0.5s ease-in 0.1s both; }
+.fade-in-delay-2 { animation: fadeIn 0.5s ease-in 0.2s both; }
+.fade-in-delay-3 { animation: fadeIn 0.5s ease-in 0.3s both; }
+.fade-in-delay-4 { animation: fadeIn 0.5s ease-in 0.4s both; }
+.fade-in-delay-5 { animation: fadeIn 0.5s ease-in 0.5s both; }
+.fade-in-delay-6 { animation: fadeIn 0.5s ease-in 0.6s both; }
+.fade-in-delay-7 { animation: fadeIn 0.5s ease-in 0.7s both; }
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.fade-in-up.fade-in-delay-1 { animation: fadeInUp 0.6s ease-out 0.1s both; }
+.fade-in-up.fade-in-delay-2 { animation: fadeInUp 0.6s ease-out 0.2s both; }
+.fade-in-up.fade-in-delay-3 { animation: fadeInUp 0.6s ease-out 0.3s both; }
+.fade-in-up.fade-in-delay-4 { animation: fadeInUp 0.6s ease-out 0.4s both; }
+.fade-in-up.fade-in-delay-5 { animation: fadeInUp 0.6s ease-out 0.5s both; }
+.fade-in-up.fade-in-delay-6 { animation: fadeInUp 0.6s ease-out 0.6s both; }
+.fade-in-up.fade-in-delay-7 { animation: fadeInUp 0.6s ease-out 0.7s both; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
