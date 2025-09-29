@@ -37,8 +37,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 调用微信接口获取用户信息
-    const wechatInfo = await getWechatUserInfo(code);
+    let wechatInfo = null;
+
+    // 在开发环境中，允许使用测试 code
+    if (process.env.NODE_ENV === 'development' && code.startsWith('test_')) {
+      // 模拟微信登录，使用 code 作为 openid
+      wechatInfo = {
+        openid: code.replace('test_', 'test_openid_'),
+        session_key: 'test_session_key'
+      };
+      console.log('🧪 开发环境：使用测试 code 模拟微信登录');
+    } else {
+      // 生产环境或开发环境使用真实 code 时，调用微信接口获取用户信息
+      console.log('🚀 调用微信接口获取用户信息');
+      wechatInfo = await getWechatUserInfo(code);
+    }
+
     if (!wechatInfo) {
       throw new ApiError(
         ERROR_CODES.BAD_REQUEST,
