@@ -13,6 +13,7 @@ import { ElMessage } from "element-plus"
 import NProgress from "nprogress"
 import { useCounter } from "@/store/index.ts"
 import routes from "@/router/modules/constRoute.ts"
+import accountingRoutes from "@/router/modules/accounting.ts"
 import "nprogress/nprogress.css"
 import { hasRole } from "@/middleware-roles.ts"
 import { jwtDecode } from "jwt-decode"
@@ -21,7 +22,7 @@ NProgress.configure({ showSpinner: false })
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes: [...routes, ...accountingRoutes],
 })
 
 for (let i = 0; i < 100; i++) {

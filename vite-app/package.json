@@ -15,7 +15,9 @@
   "dependencies": {
     "@dimforge/rapier3d": "^0.18.0",
     "@element-plus/icons-vue": "^2.1.0",
+    "@types/echarts": "^5.0.0",
     "axios": "^1.5.0",
+    "echarts": "^6.0.0",
     "element-plus": "^2.10.4",
     "glslify": "^7.1.1",
     "html2canvas": "^1.4.1",
