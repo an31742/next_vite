@@ -125,6 +125,9 @@
 
             <el-table-column label="操作" width="150" fixed="right">
               <template #default="{ row }">
+                <el-button size="small" text @click="viewUserTransactions(row.user)">
+                  查看记录
+                </el-button>
                 <el-button size="small" text @click="resetUserTransactions(row.user.id)">
                   重置数据
                 </el-button>
@@ -217,9 +220,10 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { User, Document, TrendCharts, Minus, Refresh } from '@element-plus/icons-vue'
-import http from '@/service/http'
+import { getUsersStats, resetUserTransactionsAdmin, batchInitializeUsers, clearDatabase as clearDatabaseApi } from '@/service/accounting'
 
 // 简化的类型定义
 interface UserStat {
@@ -245,23 +249,9 @@ interface SystemStats {
 }
 
 // API 函数
-const getUsersStats = async () => {
-  return await http.get('/admin/users-stats')
-}
-
-const resetUserTransactionsApi = async (userId: string) => {
-  return await http.post('/admin/system-manage', { action: 'reset_user_transactions', userId, resetType: 'amount_only' })
-}
-
-const batchInitializeUsers = async (data: any) => {
-  return await http.post('/admin/batch-initialize', data)
-}
-
-const clearDatabaseApi = async () => {
-  return await http.post('/clear-data')
-}
 
 // 响应式数据
+const router = useRouter()
 const loading = ref(false)
 const resetLoading = ref(false)
 const batchInitLoading = ref(false)
@@ -337,7 +327,7 @@ const resetUserTransactions = async (userId: string) => {
       type: 'warning'
     })
 
-    const response = await resetUserTransactionsApi(userId)
+    const response = await resetUserTransactionsAdmin(userId)
     if (response.code === 200) {
       ElMessage.success('重置成功')
       loadUsers()
@@ -409,6 +399,17 @@ const clearDatabase = async () => {
       ElMessage.error('操作失败')
     }
   }
+}
+
+const viewUserTransactions = (user: any) => {
+  router.push({
+    name: 'UserTransactions',
+    query: {
+      userId: user.id,
+      nickname: user.nickname,
+      avatar: user.avatar
+    }
+  })
 }
 
 const deleteUser = async (_userId: string) => {

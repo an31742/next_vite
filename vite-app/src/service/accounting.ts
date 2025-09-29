@@ -140,6 +140,10 @@ export const getTransactions = (params: TransactionListQuery): Promise<ApiRespon
   return http.get('/api/transactions', { params })
 }
 
+export const getAdminUserTransactions = (userId: string, params: TransactionListQuery): Promise<ApiResponse<TransactionListResponse>> => {
+  return http.get('/api/admin/user-transactions', { params: { userId, ...params } })
+}
+
 export const getTransaction = (id: string): Promise<ApiResponse<Transaction>> => {
   return http.get(`/api/transactions/${id}`)
 }
@@ -206,8 +210,8 @@ export const getUserStatistics = (): Promise<ApiResponse<StatisticsSummary>> => 
   return http.get('/api/user/statistics')
 }
 
-export const resetUserTransactions = (): Promise<ApiResponse<void>> => {
-  return http.post('/api/user/reset-transactions')
+export const resetUserTransactionsAdmin = (userId: string): Promise<ApiResponse<void>> => {
+  return http.post('/api/admin/system-manage/reset-user', { userId, resetType: 'amount_only' })
 }
 
 // 管理员API
@@ -217,4 +221,8 @@ export const getUsersStats = (): Promise<ApiResponse<any>> => {
 
 export const batchInitializeUsers = (data: any): Promise<ApiResponse<any>> => {
   return http.post('/api/admin/batch-initialize', data)
+}
+
+export const clearDatabase = (): Promise<ApiResponse<any>> => {
+  return http.post('/api/admin/system-manage/clear-database', { action: 'clear_database' })
 }

@@ -45,6 +45,12 @@ const accountingRoutes: RouteRecordRaw[] = [
         meta: { title: '系统管理', icon: 'Setting', requiresAuth: true, role: 'admin' }
       },
       {
+        path: 'user-transactions',
+        name: 'UserTransactions',
+        component: () => import('@/views/accounting/user-transactions.vue'),
+        meta: { title: '用户交易记录', requiresAuth: true, role: 'admin' }
+      },
+      {
         path: 'home',
         name: 'AccountingHome',
         component: () => import('@/views/accounting/index.vue'),
