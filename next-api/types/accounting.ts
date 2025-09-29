@@ -21,17 +21,37 @@ export interface User {
   updatedAt: Date;
 }
 
+// 登录请求类型
 export interface LoginRequest {
   code: string;
   encryptedData?: string;
   iv?: string;
 }
 
+// 用户信息登录请求类型
+export interface UserLoginRequest {
+  code: string;
+  userInfo: {
+    nickName: string;
+    avatarUrl: string;
+    gender: number;
+    country: string;
+    province: string;
+    city: string;
+  };
+}
+
+// 登录响应类型
 export interface LoginResponse {
   access_token: string;
   expires_in: number;
-  refresh_token?: string;
-  user: Pick<User, 'id' | 'openid' | 'nickname' | 'avatar'>;
+  refresh_token: string;
+  user: {
+    id: string;
+    openid: string;
+    nickname: string;
+    avatar: string;
+  };
 }
 
 export interface RefreshTokenRequest {

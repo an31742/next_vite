@@ -139,7 +139,11 @@ export async function POST(request: NextRequest) {
       throw new ApiError(ERROR_CODES.UNAUTHORIZED, '未授权访问', 'UNAUTHORIZED');
     }
 
+    console.log('=== 创建交易记录 ===');
+    console.log('用户信息:', user);
+
     const body: CreateTransactionRequest = await request.json();
+    console.log('请求体:', body);
 
     // 验证数据
     const validation = validateTransactionData(body);
@@ -186,13 +190,20 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date()
     };
 
+    console.log('新交易记录:', newTransaction);
+
     const insertResult = await transactionsCollection.insertOne(newTransaction);
+    console.log('插入结果:', insertResult);
+
     const transaction = await transactionsCollection.findOne({ _id: insertResult.insertedId });
+    console.log('创建的交易记录:', transaction);
 
     const transactionWithCategory: TransactionWithCategory = {
       ...transaction!,
       category
     };
+
+    console.log('返回的交易记录:', transactionWithCategory);
 
     return NextResponse.json(
       successResponse('创建成功', transactionWithCategory),
@@ -200,6 +211,7 @@ export async function POST(request: NextRequest) {
     );
 
   } catch (error) {
+    console.error('❌ 创建交易记录失败:', error);
     const errorResponse = handleApiError(error);
     return NextResponse.json(errorResponse, {
       status: errorResponse.code

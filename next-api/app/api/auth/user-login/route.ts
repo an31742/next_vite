@@ -13,8 +13,6 @@ import {
 import {
   User,
   Transaction,
-  LoginRequest,
-  LoginResponse,
   ERROR_CODES,
   COLLECTIONS
 } from '../../../../types/accounting';
@@ -23,28 +21,26 @@ import {
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+interface UserLoginRequest {
+  code: string;
+  userInfo: {
+    nickName: string;
+    avatarUrl: string;
+    gender: number;
+    country: string;
+    province: string;
+    city: string;
+  };
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const body: LoginRequest = await request.json();
-    const { code, encryptedData, iv } = body;
+    const body: UserLoginRequest = await request.json();
+    const { code, userInfo } = body;
 
-    console.log('=== 微信登录请求诊断 ===');
-    console.log('请求时间:', new Date().toISOString());
-    console.log('环境变量 NODE_ENV:', process.env.NODE_ENV || '未设置');
-    console.log('收到的 code:', code ? `${code.substring(0, 10)}...` : '未提供');
-    console.log('WECHAT_APP_ID 是否设置:', !!process.env.WECHAT_APP_ID);
-    console.log('WECHAT_APP_SECRET 是否设置:', !!process.env.WECHAT_APP_SECRET);
-
-    // 详细环境诊断
-    if (process.env.WECHAT_APP_ID) {
-      console.log('WECHAT_APP_ID 是否为测试值:', process.env.WECHAT_APP_ID.includes('your_'));
-      if (!process.env.WECHAT_APP_ID.includes('your_')) {
-        console.log('WECHAT_APP_ID 长度:', process.env.WECHAT_APP_ID.length);
-      }
-    }
-    if (process.env.WECHAT_APP_SECRET) {
-      console.log('WECHAT_APP_SECRET 是否为测试值:', process.env.WECHAT_APP_SECRET.includes('your_'));
-    }
+    console.log('=== 微信用户信息登录 ===');
+    console.log('收到的 code:', code);
+    console.log('用户信息:', userInfo);
 
     if (!code) {
       throw new ApiError(
@@ -55,61 +51,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let wechatInfo = null;
-
-    // 在开发环境中，允许使用测试 code
-    if (process.env.NODE_ENV === 'development' && code.startsWith('test_')) {
-      // 模拟微信登录，使用 code 作为 openid
-      wechatInfo = {
-        openid: code.replace('test_', 'test_openid_'),
-        session_key: 'test_session_key'
-      };
-      console.log('🧪 开发环境：使用测试 code 模拟微信登录');
-    } else {
-      // 生产环境或开发环境使用真实 code 时，调用微信接口获取用户信息
-      console.log('🚀 调用微信接口获取用户信息');
-      // 添加环境变量检查日志
-      if (!process.env.WECHAT_APP_ID || !process.env.WECHAT_APP_SECRET) {
-        console.error('❌ 微信配置缺失:', {
-          appIdExists: !!process.env.WECHAT_APP_ID,
-          appSecretExists: !!process.env.WECHAT_APP_SECRET
-        });
-        throw new ApiError(
-          ERROR_CODES.INTERNAL_ERROR,
-          '服务器配置错误：缺少微信配置',
-          'MISSING_WECHAT_CONFIG'
-        );
-      } else if (process.env.WECHAT_APP_ID.includes('your_') || process.env.WECHAT_APP_SECRET.includes('your_')) {
-        console.error('❌ 微信配置为测试值:', {
-          appId: process.env.WECHAT_APP_ID,
-          appSecret: process.env.WECHAT_APP_SECRET ? '已设置(隐藏)' : '未设置'
-        });
-        throw new ApiError(
-          ERROR_CODES.INTERNAL_ERROR,
-          '服务器配置错误：微信配置为测试值',
-          'WECHAT_CONFIG_TEST_VALUE'
-        );
-      }
-
-      wechatInfo = await getWechatUserInfo(code);
-      console.log('微信接口返回结果:', wechatInfo ? '成功获取' : '获取失败');
-      if (wechatInfo) {
-        console.log('openid 长度:', wechatInfo.openid.length);
-      }
-    }
+    // 调用微信接口获取用户 openid
+    const wechatInfo = await getWechatUserInfo(code);
 
     if (!wechatInfo) {
-      console.error('❌ 微信登录失败，无法获取用户信息');
       throw new ApiError(
         ERROR_CODES.BAD_REQUEST,
-        '微信登录失败，无法获取用户信息',
+        '微信登录失败',
         ERROR_CODES.WECHAT_LOGIN_FAILED
       );
     }
 
-    const { openid, session_key } = wechatInfo;
-    console.log('✅ 成功获取用户 openid:', `${openid.substring(0, 10)}...`);
-
+    const { openid } = wechatInfo;
     const usersCollection = await getCollection<User>(COLLECTIONS.USERS);
     const transactionsCollection = await getCollection<Transaction>(COLLECTIONS.TRANSACTIONS);
 
@@ -118,12 +71,12 @@ export async function POST(request: NextRequest) {
     let isNewUser = false;
 
     if (!user) {
-      // 创建新用户
+      // 创建新用户，使用微信提供的用户信息
       const newUser: Omit<User, '_id'> = {
         id: generateId(),
         openid,
-        nickname: '用户' + openid.slice(-6),
-        avatar: '',
+        nickname: userInfo.nickName || '用户' + openid.slice(-6),
+        avatar: userInfo.avatarUrl || '',
         createdAt: new Date(),
         updatedAt: new Date()
       };
@@ -142,12 +95,24 @@ export async function POST(request: NextRequest) {
 
       console.log(`用户 ${user!.id} 的收支已初始化为0，确保从零开始记账`);
     } else {
+      // 更新用户信息（如果提供了）
+      if (userInfo.nickName || userInfo.avatarUrl) {
+        const updateData: any = { updatedAt: new Date() };
+        if (userInfo.nickName) updateData.nickname = userInfo.nickName;
+        if (userInfo.avatarUrl) updateData.avatar = userInfo.avatarUrl;
+
+        await usersCollection.updateOne(
+          { openid },
+          { $set: updateData }
+        );
+        console.log(`用户 ${user.id} 信息已更新`);
+      }
+
       // 更新最后登录时间
       await usersCollection.updateOne(
         { openid },
         { $set: { updatedAt: new Date() } }
       );
-      console.log(`现有用户登录: ${user.id}`);
     }
 
     // 获取用户当前的交易统计（用于返回初始状态）
@@ -194,7 +159,7 @@ export async function POST(request: NextRequest) {
     const accessToken = generateToken(tokenPayload);
     const refreshToken = generateRefreshToken(tokenPayload);
 
-    const loginResponse: LoginResponse = {
+    const loginResponse = {
       access_token: accessToken,
       expires_in: 7200, // 2小时
       refresh_token: refreshToken,
